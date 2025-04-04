@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Globalization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DAL.Models
 {
-    public class Team
+    public partial class Team
     {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+        [JsonProperty("id")]
+        public long Id { get; set; }
 
-        [JsonPropertyName("country")]
+        [JsonProperty("country")]
         public string Country { get; set; }
 
-        [JsonPropertyName("alternate_name")]
-        public string? AlternateName { get; set; }
+        [JsonProperty("alternate_name")]
+        public object AlternateName { get; set; }
 
-        [JsonPropertyName("fifa_code")]
+        [JsonProperty("fifa_code")]
         public string FifaCode { get; set; }
 
-        [JsonPropertyName("group_id")]
-        public int GroupId { get; set; }
+        [JsonProperty("group_id")]
+        public long GroupId { get; set; }
 
-        [JsonPropertyName("group_letter")]
+        [JsonProperty("group_letter")]
         public string GroupLetter { get; set; }
     }
 }
