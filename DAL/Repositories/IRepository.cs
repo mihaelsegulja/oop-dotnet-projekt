@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    interface IRepo
+    interface IRepository
     {
     }
 }
