@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DAL.Helpers
+namespace DAL.Converters
 {
     internal class ParseStringConverter : JsonConverter
     {

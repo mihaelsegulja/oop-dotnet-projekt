@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace DAL.Helpers
+namespace DAL.Converters
 {
     internal static class Converter
     {
