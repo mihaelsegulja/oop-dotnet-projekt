@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DAL.Enums;
-using DAL.Helpers;
+using DAL.Converters;
 using Newtonsoft.Json;
 
 namespace DAL.Models

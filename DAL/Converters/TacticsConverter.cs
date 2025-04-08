@@ -1,7 +1,7 @@
 ﻿using DAL.Enums;
 using Newtonsoft.Json;
 
-namespace DAL.Helpers
+namespace DAL.Converters
 {
     internal class TacticsConverter : JsonConverter
     {
