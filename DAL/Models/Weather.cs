@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using DAL.Converters;
+using DAL.Enums;
+using Newtonsoft.Json;
 
 namespace DAL.Models
 {
