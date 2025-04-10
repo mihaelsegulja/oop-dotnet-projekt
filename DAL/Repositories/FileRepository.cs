@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories
+namespace DAL.Repositories;
+
+class FileRepository
 {
-    class JsonFileRepository
-    {
         
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace DAL.Enums
-{
-    public enum Time 
-    { 
-        FullTime 
-    };
+﻿namespace DAL.Enums;
+
+public enum Time 
+{ 
+    FullTime 
 }

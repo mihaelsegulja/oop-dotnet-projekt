@@ -1,7 +1,6 @@
-﻿namespace DAL.Enums
-{
-    public enum Status 
-    { 
-        Completed 
-    };
+﻿namespace DAL.Enums;
+
+public enum Status 
+{ 
+    Completed 
 }

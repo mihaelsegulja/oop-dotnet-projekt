@@ -2,25 +2,24 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace DAL.Converters
+namespace DAL.Converters;
+
+internal static class Converter
 {
-    internal static class Converter
+    public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
     {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+        DateParseHandling = DateParseHandling.None,
+        Converters =
         {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                TypeOfEventConverter.Singleton,
-                PositionConverter.Singleton,
-                TacticsConverter.Singleton,
-                StageNameConverter.Singleton,
-                StatusConverter.Singleton,
-                TimeConverter.Singleton,
-                DescriptionConverter.Singleton,
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
+            TypeOfEventConverter.Singleton,
+            PositionConverter.Singleton,
+            TacticsConverter.Singleton,
+            StageNameConverter.Singleton,
+            StatusConverter.Singleton,
+            TimeConverter.Singleton,
+            DescriptionConverter.Singleton,
+            new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+        }
+    };
 }

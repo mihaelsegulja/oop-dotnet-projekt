@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories
+namespace DAL.Repositories;
+
+class WebApiRepository
 {
-    class WebApiRepository
-    {
-        private readonly String _baseUrl = "https://worldcup-vua.nullbit.hr";
-    }
+    private readonly String _baseUrl = "https://worldcup-vua.nullbit.hr";
 }

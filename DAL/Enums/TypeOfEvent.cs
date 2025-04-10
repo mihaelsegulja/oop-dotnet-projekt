@@ -1,14 +1,13 @@
-﻿namespace DAL.Enums
-{
-    public enum TypeOfEvent 
-    { 
-        Goal, 
-        GoalOwn, 
-        GoalPenalty, 
-        RedCard, 
-        SubstitutionIn, 
-        SubstitutionOut, 
-        YellowCard, 
-        YellowCardSecond
-    };
+﻿namespace DAL.Enums;
+
+public enum TypeOfEvent 
+{ 
+    Goal, 
+    GoalOwn, 
+    GoalPenalty, 
+    RedCard, 
+    SubstitutionIn, 
+    SubstitutionOut, 
+    YellowCard, 
+    YellowCardSecond
 }

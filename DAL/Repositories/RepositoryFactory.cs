@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories
+namespace DAL.Repositories;
+
+public class RepositoryFactory
 {
-    public class RepositoryFactory
-    {
         
-    }
 }
