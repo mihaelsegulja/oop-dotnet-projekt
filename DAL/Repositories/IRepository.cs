@@ -8,5 +8,6 @@ namespace DAL.Repositories
 {
     interface IRepository
     {
+        
     }
 }
