@@ -1,6 +1,6 @@
 namespace DAL.Enums;
 
-public enum WorldCupType
+public enum WorldCupGender
 {
     Men,
     Women
