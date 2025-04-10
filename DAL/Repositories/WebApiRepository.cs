@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    class FileRepository
+    class WebApiRepository
     {
+        private readonly String _baseUrl = "https://worldcup-vua.nullbit.hr";
     }
 }
