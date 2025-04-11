@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories;
 
-class AppSettingsRepository
+internal class AppSettingsRepository
 {
     private readonly string _filePath = "appsettings.json";
     private AppSettings _defaultAppSettings = new()
