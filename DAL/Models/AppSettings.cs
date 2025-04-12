@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
-namespace DAL.Models
+namespace DAL.Models;
+
+public class AppSettings
 {
-    public class AppSettings
-    {
-        public string LanguageAndRegion { get; set; }
-        public WorldCupGender WorldCupGender { get; set; }
-    }
+    [JsonProperty("language_and_region")]
+    public string LanguageAndRegion { get; set; }
+    [JsonProperty("world_cup_gender")]
+    public WorldCupGender WorldCupGender { get; set; }
 }
