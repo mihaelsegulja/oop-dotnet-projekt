@@ -1,17 +1,12 @@
 using DAL.Enums;
 using DAL.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories;
 
 internal class AppSettingsRepository
 {
-    private readonly string _filePath = "appsettings.json";
+    private readonly string _filePath = "wc_appsettings.json";
     private AppSettings _defaultAppSettings = new()
     {
         LanguageAndRegion = "en-US",

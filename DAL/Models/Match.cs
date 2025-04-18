@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL.Enums;
+﻿using DAL.Enums;
 using DAL.Converters;
 using Newtonsoft.Json;
 
