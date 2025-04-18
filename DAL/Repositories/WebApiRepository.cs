@@ -25,6 +25,16 @@ internal class WebApiRepository : IRepository
     }
 
     /// <summary>
+    /// Gets all teams.
+    /// </summary>
+    /// <returns>A list of teams</returns>
+    public async Task<List<Team>> GetTeams()
+    {
+        string endpoint = GetEndpointPath("teams");
+        return await ExecuteRequestAsync<List<Team>>(endpoint);
+    }
+
+    /// <summary>
     /// Gets a list of all matches.
     /// </summary>
     /// <returns>A list of matches</returns>
@@ -69,16 +79,6 @@ internal class WebApiRepository : IRepository
     {
         string endpoint = GetEndpointPath("teams/group_results");
         return await ExecuteRequestAsync<List<Result>>(endpoint);
-    }
-
-    /// <summary>
-    /// Gets all teams.
-    /// </summary>
-    /// <returns>A list of teams</returns>
-    public async Task<List<Team>> GetTeams()
-    {
-        string endpoint = GetEndpointPath("teams");
-        return await ExecuteRequestAsync<List<Team>>(endpoint);
     }
 
     /// <summary>

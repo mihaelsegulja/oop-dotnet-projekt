@@ -35,10 +35,4 @@ public interface IRepository
     /// </summary>
     /// <returns>A list of group results</returns>
     Task<List<Result>> GetGroupResults();
-
-    /// <summary>
-    /// Gets the gender of the World Cup data.
-    /// </summary>
-    /// <returns>The gender of the World Cup data</returns>
-    WorldCupGender GetWorldCupGender();
 }

@@ -7,7 +7,7 @@ namespace DAL.Repositories;
 internal class AppSettingsRepository
 {
     private readonly string _filePath = "wc_appsettings.json";
-    private AppSettings _defaultAppSettings = new()
+    private readonly AppSettings _defaultAppSettings = new()
     {
         LanguageAndRegion = "en-US",
         WorldCupGender = WorldCupGender.Men
@@ -25,10 +25,7 @@ internal class AppSettingsRepository
 
     public void SaveSettings(AppSettings appSettings)
     {
-        if (appSettings == null)
-        {
-            appSettings = _defaultAppSettings;
-        }
+        appSettings ??= _defaultAppSettings;
 
         string json = JsonConvert.SerializeObject(appSettings, Formatting.Indented);
         File.WriteAllText(_filePath, json);

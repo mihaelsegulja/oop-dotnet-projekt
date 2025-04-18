@@ -27,32 +27,19 @@ internal class FileRepository : IRepository
             throw new DirectoryNotFoundException($"World Cup data directory not found: {genderPath}");
         }
     }
-
-    /// <summary>
-    /// Gets all teams from the teams.json file.
-    /// </summary>
-    /// <returns>A list of teams</returns>
+    
     public async Task<List<Team>> GetTeams()
     {
         string filePath = GetFilePath("teams");
         return await ReadJsonFileAsync<List<Team>>(filePath);
     }
-
-    /// <summary>
-    /// Gets all matches from the matches.json file.
-    /// </summary>
-    /// <returns>A list of matches</returns>
+    
     public async Task<List<Match>> GetMatches()
     {
         string filePath = GetFilePath("matches");
         return await ReadJsonFileAsync<List<Match>>(filePath);
     }
-
-    /// <summary>
-    /// Gets matches for a specific team identified by FIFA code.
-    /// </summary>
-    /// <param name="fifaCode">The FIFA code of the team (e.g., "CRO" for Croatia)</param>
-    /// <returns>A list of matches for the specified team</returns>
+    
     public async Task<List<Match>> GetMatchesByTeam(string fifaCode)
     {
         if (string.IsNullOrEmpty(fifaCode))
@@ -66,34 +53,17 @@ internal class FileRepository : IRepository
             (m.AwayTeam?.Code == fifaCode)
         ).ToList();
     }
-
-    /// <summary>
-    /// Gets team results from the results.json file.
-    /// </summary>
-    /// <returns>A list of team results</returns>
+    
     public async Task<List<Result>> GetTeamResults()
     {
         string filePath = GetFilePath("results");
         return await ReadJsonFileAsync<List<Result>>(filePath);
     }
-
-    /// <summary>
-    /// Gets group results from the group_results.json file.
-    /// </summary>
-    /// <returns>A list of group results</returns>
+    
     public async Task<List<Result>> GetGroupResults()
     {
         string filePath = GetFilePath("group_results");
         return await ReadJsonFileAsync<List<Result>>(filePath);
-    }
-
-    /// <summary>
-    /// Gets the gender of the World Cup data.
-    /// </summary>
-    /// <returns>The gender of the World Cup data</returns>
-    public WorldCupGender GetWorldCupGender()
-    {
-        return _gender;
     }
 
     /// <summary>
