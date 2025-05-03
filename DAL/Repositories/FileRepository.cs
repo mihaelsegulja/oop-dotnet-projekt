@@ -16,10 +16,14 @@ internal class FileRepository : IRepository
         { "group_results", "group_results.json" }
     };
 
-    public FileRepository(string basePath, WorldCupGender gender)
+    public FileRepository(WorldCupGender gender)
     {
-        _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
         _gender = gender;
+
+        _basePath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "Data"
+        );
 
         string genderPath = GetGenderPath();
         if (!Directory.Exists(genderPath))
