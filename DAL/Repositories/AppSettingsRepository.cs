@@ -13,10 +13,8 @@ internal class AppSettingsRepository
         WorldCupGender = WorldCupGender.Men
     };
 
-    public AppSettingsRepository(string filePath)
+    public AppSettingsRepository()
     {
-        _filePath = filePath;
-
         if (!File.Exists(_filePath))
         {
             File.Create(_filePath).Close();
