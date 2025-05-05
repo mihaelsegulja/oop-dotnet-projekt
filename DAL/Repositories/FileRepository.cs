@@ -32,19 +32,19 @@ internal class FileRepository : IRepository
         }
     }
     
-    public async Task<List<Team>> GetTeams()
+    public async Task<IList<Team>> GetTeams()
     {
         string filePath = GetFilePath("teams");
         return await ReadJsonFileAsync<List<Team>>(filePath);
     }
     
-    public async Task<List<Match>> GetMatches()
+    public async Task<IList<Match>> GetMatches()
     {
         string filePath = GetFilePath("matches");
         return await ReadJsonFileAsync<List<Match>>(filePath);
     }
     
-    public async Task<List<Match>> GetMatchesByTeam(string fifaCode)
+    public async Task<IList<Match>> GetMatchesByTeam(string fifaCode)
     {
         if (string.IsNullOrEmpty(fifaCode))
             throw new ArgumentNullException(nameof(fifaCode), "FIFA code cannot be null or empty");
@@ -58,13 +58,13 @@ internal class FileRepository : IRepository
         ).ToList();
     }
     
-    public async Task<List<Result>> GetTeamResults()
+    public async Task<IList<Result>> GetTeamResults()
     {
         string filePath = GetFilePath("results");
         return await ReadJsonFileAsync<List<Result>>(filePath);
     }
     
-    public async Task<List<Result>> GetGroupResults()
+    public async Task<IList<Result>> GetGroupResults()
     {
         string filePath = GetFilePath("group_results");
         return await ReadJsonFileAsync<List<Result>>(filePath);
@@ -117,10 +117,6 @@ internal class FileRepository : IRepository
                 throw new JsonException($"Failed to deserialize JSON file: {filePath}");
 
             return result;
-        }
-        catch (JsonException ex)
-        {
-            throw new JsonException($"Error parsing JSON file {filePath}: {ex.Message}", ex);
         }
         catch (Exception ex)
         {

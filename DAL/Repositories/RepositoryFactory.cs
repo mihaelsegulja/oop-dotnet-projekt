@@ -1,36 +1,14 @@
 ﻿using DAL.Enums;
 using DAL.Models;
-using System.Net.NetworkInformation;
 
 namespace DAL.Repositories;
 
 /// <summary>
 /// Factory for creating and managing repositories to access World Cup data.
 /// </summary>
-public class RepositoryFactory
+public partial class RepositoryFactory
 {
     private readonly AppSettingsRepository _appSettingsRepository;
-
-    /// <summary>
-    /// The type of repository to use for data access.
-    /// </summary>
-    public enum RepositoryType
-    {
-        /// <summary>
-        /// Use online API for data access
-        /// </summary>
-        WebApi,
-
-        /// <summary>
-        /// Use local JSON files for data access
-        /// </summary>
-        FileSystem,
-
-        /// <summary>
-        /// Try WebApi first, fallback to FileSystem if unavailable
-        /// </summary>
-        AutoDetect
-    }
 
     /// <summary>
     /// Initializes a new instance of the RepositoryFactory with a custom settings file.
@@ -55,9 +33,11 @@ public class RepositoryFactory
     /// </summary>
     /// <param name="gender">World Cup gender to get data for</param>
     /// <param name="type">Repository type to use (defaults to AutoDetect)</param>
-    /// <returns>A repository implementing IRepository</returns>
-    public IRepository GetRepository(RepositoryType type = RepositoryType.AutoDetect, WorldCupGender? gender = null)
+    /// <returns>A repository</returns>
+    public IRepository GetRepository(RepositoryType? type = null, WorldCupGender? gender = null)
     {
+        type ??= RepositoryType.AutoDetect;
+
         if (gender == null)
         {
             var settings = _appSettingsRepository.LoadSettings();
@@ -83,9 +63,10 @@ public class RepositoryFactory
     {
         try
         {
-            using var ping = new Ping();
-            var reply = ping.Send("worldcup-vua.nullbit.hr", 3000);
-            return reply?.Status == IPStatus.Success;
+            using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(3);
+            var response = client.GetAsync("https://worldcup-vua.nullbit.hr").Result;
+            return response.IsSuccessStatusCode;
         }
         catch
         {

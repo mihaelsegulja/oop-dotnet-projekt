@@ -28,7 +28,7 @@ internal class WebApiRepository : IRepository
     /// Gets all teams.
     /// </summary>
     /// <returns>A list of teams</returns>
-    public async Task<List<Team>> GetTeams()
+    public async Task<IList<Team>> GetTeams()
     {
         string endpoint = GetEndpointPath("teams");
         return await ExecuteRequestAsync<List<Team>>(endpoint);
@@ -38,7 +38,7 @@ internal class WebApiRepository : IRepository
     /// Gets a list of all matches.
     /// </summary>
     /// <returns>A list of matches</returns>
-    public async Task<List<Match>> GetMatches()
+    public async Task<IList<Match>> GetMatches()
     {
         string endpoint = GetEndpointPath("matches");
         return await ExecuteRequestAsync<List<Match>>(endpoint);
@@ -49,7 +49,7 @@ internal class WebApiRepository : IRepository
     /// </summary>
     /// <param name="fifaCode">The FIFA code of the team (e.g., "CRO" for Croatia)</param>
     /// <returns>A list of matches for the specified team</returns>
-    public async Task<List<Match>> GetMatchesByTeam(string fifaCode)
+    public async Task<IList<Match>> GetMatchesByTeam(string fifaCode)
     {
         if (string.IsNullOrEmpty(fifaCode))
             throw new ArgumentNullException(nameof(fifaCode), "FIFA code cannot be null or empty");
@@ -65,7 +65,7 @@ internal class WebApiRepository : IRepository
     /// Gets team results and standings.
     /// </summary>
     /// <returns>A list of team results</returns>
-    public async Task<List<Result>> GetTeamResults()
+    public async Task<IList<Result>> GetTeamResults()
     {
         string endpoint = GetEndpointPath("teams/results");
         return await ExecuteRequestAsync<List<Result>>(endpoint);
@@ -75,19 +75,10 @@ internal class WebApiRepository : IRepository
     /// Gets group results.
     /// </summary>
     /// <returns>A list of group results</returns>
-    public async Task<List<Result>> GetGroupResults()
+    public async Task<IList<Result>> GetGroupResults()
     {
         string endpoint = GetEndpointPath("teams/group_results");
         return await ExecuteRequestAsync<List<Result>>(endpoint);
-    }
-
-    /// <summary>
-    /// Gets the gender of the World Cup data.
-    /// </summary>
-    /// <returns>The gender of the World Cup data</returns>
-    public WorldCupGender GetWorldCupGender()
-    {
-        return _gender;
     }
 
     /// <summary>
