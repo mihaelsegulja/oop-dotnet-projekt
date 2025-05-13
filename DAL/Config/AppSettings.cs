@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace DAL.Models;
+namespace DAL.Config;
 
 public class AppSettings
 {
@@ -12,4 +12,10 @@ public class AppSettings
     [JsonProperty("world_cup_gender")]
     [JsonConverter(typeof(StringEnumConverter))]
     public WorldCupGender WorldCupGender { get; set; }
+
+    [JsonProperty("fav_team")]
+    public string? FavTeam { get; set; }
+
+    [JsonProperty("fav_players")]
+    public List<string>? FavPlayersList { get; set; } = new List<string>();
 }

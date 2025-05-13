@@ -16,6 +16,7 @@ public partial class Match
     public Status Status { get; set; }
 
     [JsonProperty("time")]
+    [JsonConverter(typeof(TimeConverter))]
     public Time Time { get; set; }
 
     [JsonProperty("fifa_id")]
@@ -33,6 +34,7 @@ public partial class Match
     public List<string> Officials { get; set; }
 
     [JsonProperty("stage_name")]
+    [JsonConverter(typeof(StageNameConverter))]
     public StageName StageName { get; set; }
 
     [JsonProperty("home_team_country")]

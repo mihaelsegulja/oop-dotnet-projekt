@@ -70,6 +70,32 @@ internal class FileRepository : IRepository
         return await ReadJsonFileAsync<List<Result>>(filePath);
     }
 
+    public async Task<IList<StartingEleven>> GetPlayersByCountry(string fifaCode)
+    {
+        if (string.IsNullOrEmpty(fifaCode))
+            throw new ArgumentNullException(nameof(fifaCode), "FIFA code cannot be null or empty");
+
+        var matches = await GetMatchesByTeam(fifaCode);
+
+        var players = new HashSet<StartingEleven>(new StartingElevenComparer());
+
+        foreach (var match in matches)
+        {
+            if (match.HomeTeam?.Code == fifaCode)
+            {
+                players.UnionWith(match.HomeTeamStatistics.StartingEleven);
+                players.UnionWith(match.HomeTeamStatistics.Substitutes);
+            }
+            if (match.AwayTeam?.Code == fifaCode)
+            {
+                players.UnionWith(match.AwayTeamStatistics.StartingEleven);
+                players.UnionWith(match.AwayTeamStatistics.Substitutes);
+            }
+        }
+
+        return players.ToList();
+    }
+
     /// <summary>
     /// Gets the path to the gender-specific folder.
     /// </summary>

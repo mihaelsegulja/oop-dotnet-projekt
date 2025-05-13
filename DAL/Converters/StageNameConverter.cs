@@ -15,15 +15,19 @@ internal class StageNameConverter : JsonConverter
         {
             case "Final":
                 return StageName.Final;
+            case "First Stage":
             case "First stage":
                 return StageName.FirstStage;
             case "Play-off for third place":
+            case "Match for third place":
                 return StageName.PlayOffForThirdPlace;
             case "Quarter-finals":
+            case "Quarter-final":
                 return StageName.QuarterFinals;
             case "Round of 16":
                 return StageName.RoundOf16;
             case "Semi-finals":
+            case "Semi-final":
                 return StageName.SemiFinals;
         }
         throw new Exception("Cannot unmarshal type StageName");

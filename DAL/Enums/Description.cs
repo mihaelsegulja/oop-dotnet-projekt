@@ -2,9 +2,10 @@
 
 public enum Description 
 { 
-    ClearNight, 
-    Cloudy, 
-    PartlyCloudy, 
-    PartlyCloudyNight, 
-    Sunny 
+    ClearNight,
+    Cloudy,
+    PartlyCloudy,
+    PartlyCloudyNight,
+    CloudyNight,
+    Sunny
 }
