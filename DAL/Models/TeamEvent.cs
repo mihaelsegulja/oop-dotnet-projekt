@@ -1,4 +1,5 @@
-﻿using DAL.Enums;
+﻿using DAL.Converters;
+using DAL.Enums;
 using Newtonsoft.Json;
 
 namespace DAL.Models;
@@ -9,6 +10,7 @@ public partial class TeamEvent
     public long Id { get; set; }
 
     [JsonProperty("type_of_event")]
+    [JsonConverter(typeof(TypeOfEventConverter))]
     public TypeOfEvent TypeOfEvent { get; set; }
 
     [JsonProperty("player")]

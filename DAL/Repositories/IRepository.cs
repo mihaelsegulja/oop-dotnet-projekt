@@ -34,4 +34,11 @@ public interface IRepository
     /// </summary>
     /// <returns>A list of group results</returns>
     Task<IList<Result>> GetGroupResults();
+    
+    /// <summary>
+    /// Gets players from a country identified by FIFA code.
+    /// </summary>
+    /// <param name="fifaCode">The FIFA code of the team (e.g., "CRO" for Croatia)</param>
+    /// <returns>A list of players for the specified country</returns>
+    Task<IList<StartingEleven>> GetPlayersByCountry(string fifaCode);
 }

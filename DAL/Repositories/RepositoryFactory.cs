@@ -1,12 +1,12 @@
-﻿using DAL.Enums;
-using DAL.Models;
+﻿using DAL.Config;
+using DAL.Enums;
 
 namespace DAL.Repositories;
 
 /// <summary>
 /// Factory for creating and managing repositories to access World Cup data.
 /// </summary>
-public partial class RepositoryFactory
+public class RepositoryFactory
 {
     private readonly AppSettingsRepository _appSettingsRepository;
 
@@ -64,7 +64,7 @@ public partial class RepositoryFactory
         try
         {
             using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(3);
+            client.Timeout = TimeSpan.FromSeconds(5);
             var response = client.GetAsync("https://worldcup-vua.nullbit.hr").Result;
             return response.IsSuccessStatusCode;
         }

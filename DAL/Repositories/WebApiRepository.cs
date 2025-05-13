@@ -24,31 +24,18 @@ internal class WebApiRepository : IRepository
         _client = new RestClient(clientOptions);
     }
 
-    /// <summary>
-    /// Gets all teams.
-    /// </summary>
-    /// <returns>A list of teams</returns>
     public async Task<IList<Team>> GetTeams()
     {
         string endpoint = GetEndpointPath("teams");
         return await ExecuteRequestAsync<List<Team>>(endpoint);
     }
 
-    /// <summary>
-    /// Gets a list of all matches.
-    /// </summary>
-    /// <returns>A list of matches</returns>
     public async Task<IList<Match>> GetMatches()
     {
         string endpoint = GetEndpointPath("matches");
         return await ExecuteRequestAsync<List<Match>>(endpoint);
     }
 
-    /// <summary>
-    /// Gets matches for a specific team identified by FIFA code.
-    /// </summary>
-    /// <param name="fifaCode">The FIFA code of the team (e.g., "CRO" for Croatia)</param>
-    /// <returns>A list of matches for the specified team</returns>
     public async Task<IList<Match>> GetMatchesByTeam(string fifaCode)
     {
         if (string.IsNullOrEmpty(fifaCode))
@@ -61,24 +48,42 @@ internal class WebApiRepository : IRepository
         return await ExecuteRequestAsync<List<Match>>(request);
     }
 
-    /// <summary>
-    /// Gets team results and standings.
-    /// </summary>
-    /// <returns>A list of team results</returns>
     public async Task<IList<Result>> GetTeamResults()
     {
         string endpoint = GetEndpointPath("teams/results");
         return await ExecuteRequestAsync<List<Result>>(endpoint);
     }
 
-    /// <summary>
-    /// Gets group results.
-    /// </summary>
-    /// <returns>A list of group results</returns>
     public async Task<IList<Result>> GetGroupResults()
     {
         string endpoint = GetEndpointPath("teams/group_results");
         return await ExecuteRequestAsync<List<Result>>(endpoint);
+    }
+
+    public async Task<IList<StartingEleven>> GetPlayersByCountry(string fifaCode)
+    {
+        if (string.IsNullOrEmpty(fifaCode))
+            throw new ArgumentNullException(nameof(fifaCode), "FIFA code cannot be null or empty");
+
+        var matches = await GetMatchesByTeam(fifaCode);
+
+        var players = new HashSet<StartingEleven>(new StartingElevenComparer());
+
+        foreach (var match in matches)
+        {
+            if (match.HomeTeam?.Code == fifaCode)
+            {
+                players.UnionWith(match.HomeTeamStatistics.StartingEleven);
+                players.UnionWith(match.HomeTeamStatistics.Substitutes);
+            }
+            if (match.AwayTeam?.Code == fifaCode)
+            {
+                players.UnionWith(match.AwayTeamStatistics.StartingEleven);
+                players.UnionWith(match.AwayTeamStatistics.Substitutes);
+            }
+        }
+
+        return players.ToList();
     }
 
     /// <summary>
@@ -139,13 +144,5 @@ internal class WebApiRepository : IRepository
         {
             throw new Exception($"Error retrieving data from API: {ex.Message}", ex);
         }
-    }
-
-    /// <summary>
-    /// Disposes the RestClient when the repository is no longer needed.
-    /// </summary>
-    public void Dispose()
-    {
-        _client?.Dispose();
     }
 }

@@ -21,6 +21,8 @@ internal class DescriptionConverter : JsonConverter
                 return Description.PartlyCloudy;
             case "Partly Cloudy Night":
                 return Description.PartlyCloudyNight;
+            case "Cloudy Night":
+                return Description.CloudyNight;
             case "Sunny":
                 return Description.Sunny;
         }
