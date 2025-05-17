@@ -6,24 +6,16 @@ namespace DAL.Repositories;
 /// <summary>
 /// Factory for creating and managing repositories to access World Cup data.
 /// </summary>
-public class RepositoryFactory
+public static class RepositoryFactory
 {
-    private readonly AppSettingsRepository _appSettingsRepository;
+    private static readonly AppSettingsRepository _appSettingsRepository = new();
 
-    /// <summary>
-    /// Initializes a new instance of the RepositoryFactory with a custom settings file.
-    /// </summary>
-    public RepositoryFactory()
-    {
-        _appSettingsRepository = new AppSettingsRepository();
-    }
-
-    public AppSettings GetAppSettings()
+    public static AppSettings GetAppSettings()
     {
         return _appSettingsRepository.LoadSettings();
     }
 
-    public void SaveAppSettings(AppSettings appSettings)
+    public static void SaveAppSettings(AppSettings appSettings)
     {
         _appSettingsRepository.SaveSettings(appSettings);
     }
@@ -34,7 +26,7 @@ public class RepositoryFactory
     /// <param name="gender">World Cup gender to get data for</param>
     /// <param name="type">Repository type to use (defaults to AutoDetect)</param>
     /// <returns>A repository</returns>
-    public IRepository GetRepository(RepositoryType? type = null, WorldCupGender? gender = null)
+    public static IRepository GetRepository(RepositoryType? type = null, WorldCupGender? gender = null)
     {
         type ??= RepositoryType.AutoDetect;
 
@@ -59,7 +51,7 @@ public class RepositoryFactory
     /// Checks if the Web API is available.
     /// </summary>
     /// <returns>True if the Web API is reachable, otherwise false.</returns>
-    private bool IsWebApiAvailable()
+    private static bool IsWebApiAvailable()
     {
         try
         {

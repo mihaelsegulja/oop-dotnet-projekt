@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp", "WinFormsApp\WinFormsApp.csproj", "{6A3F4A12-3707-441B-BF52-486EF9CDCB59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{B109C37F-1342-4459-A570-94C24E494000}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Resources", "Resources\Resources.shproj", "{CEC5260B-378B-4D99-9356-3E06CE6253E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +25,19 @@ Global
 		{6A3F4A12-3707-441B-BF52-486EF9CDCB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A3F4A12-3707-441B-BF52-486EF9CDCB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A3F4A12-3707-441B-BF52-486EF9CDCB59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B109C37F-1342-4459-A570-94C24E494000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B109C37F-1342-4459-A570-94C24E494000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B109C37F-1342-4459-A570-94C24E494000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B109C37F-1342-4459-A570-94C24E494000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8295A3D-5572-4F9D-8915-CC39DE32405A}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Resources\Resources.projitems*{6a3f4a12-3707-441b-bf52-486ef9cdcb59}*SharedItemsImports = 5
+		Resources\Resources.projitems*{cec5260b-378b-4d99-9356-3e06ce6253e8}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
