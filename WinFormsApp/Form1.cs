@@ -1,21 +1,24 @@
 using DAL.Config;
 using DAL.Enums;
 using DAL.Repositories;
-using System.Windows.Forms;
+using System.Globalization;
 
 namespace WinFormsApp;
 
 public partial class Form1 : Form
 {
-    private readonly AppSettings _appSettings;
-    private readonly IRepository _repo;
+    private AppSettings _appSettings;
+    private IRepository _repo;
 
     public Form1()
     {
         InitializeComponent();
 
-        _appSettings = RepositoryFactory.GetAppSettings();
-        _repo = RepositoryFactory.GetRepository();
+        RefreshSettings();
+
+        this.KeyPreview = true;
+        this.KeyDown += Form1_KeyDown;
+        this.FormClosing += Form1_FormClosing;
     }
 
     #region EVENTS
@@ -25,9 +28,12 @@ public partial class Form1 : Form
         _appSettings.LanguageAndRegion = rbEn.Checked ? "en-US" : "hr-HR";
         _appSettings.WorldCupGender = rbMen.Checked ? WorldCupGender.Men : WorldCupGender.Women;
 
-        RepositoryFactory.SaveAppSettings(_appSettings);
+        Cursor = Cursors.WaitCursor;
 
-        tcMain.SelectedTab = tpPlayers;
+        RepositoryFactory.SaveAppSettings(_appSettings);
+        RefreshSettings();
+
+        Cursor = Cursors.Default;
     }
 
     private void Form1_Load(object sender, EventArgs e)
@@ -41,7 +47,7 @@ public partial class Form1 : Form
 
     private void tcMain_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (tcMain.SelectedTab == tpPlayers)
+        if (tcMain.SelectedTab == tpFavs)
         {
             cbTeams.Items.Clear();
             cbTeams.ResetText();
@@ -51,25 +57,94 @@ public partial class Form1 : Form
             flpFavPlayers.BorderStyle = BorderStyle.FixedSingle;
             flpAllPlayers.Controls.Clear();
             flpFavPlayers.Controls.Clear();
-            LoadTeamsAsync();
+            flpAllPlayers.AllowDrop = true;
+            flpFavPlayers.AllowDrop = true;
+            LoadTeamsForCbAsync();
         }
     }
 
     private void btnSaveFavs_Click(object sender, EventArgs e)
     {
-        _appSettings.FavTeam = cbTeams.SelectedItem?.ToString();
+        if (cbTeams.SelectedItem == null)
+        {
+            MessageBox.Show(Resource.InfoSelFavTeam, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+        if (flpFavPlayers.Controls.Count == 0)
+        {
+            MessageBox.Show(Resource.InfoSelFavPlayers, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        _appSettings.FavTeam = cbTeams.SelectedItem.ToString();
 
         RepositoryFactory.SaveAppSettings(_appSettings);
     }
 
     private void cbTeams_SelectedIndexChanged(object sender, EventArgs e)
     {
-        LoadPlayersAsync();
+        LoadPlayersForFlpAsync();
+    }
+
+    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        var result = MessageBox.Show(
+            Resource.PromptExit,
+            Resource.ConfirmExit,
+            MessageBoxButtons.OKCancel,
+            MessageBoxIcon.Question,
+            MessageBoxDefaultButton.Button1
+        );
+
+        if (result != DialogResult.OK)
+        {
+            e.Cancel = true;
+        }
+    }
+
+    private void Form1_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Control)
+        {
+            int tabIndex = -1;
+            switch (e.KeyCode)
+            {
+                case Keys.D1: tabIndex = 0; break;
+                case Keys.D2: tabIndex = 1; break;
+                case Keys.D3: tabIndex = 2; break;
+                case Keys.D4: tabIndex = 3; break;
+            }
+            if (tabIndex >= 0 && tabIndex < tcMain.TabPages.Count)
+            {
+                tcMain.SelectedIndex = tabIndex;
+                e.Handled = true;
+            }
+        }
     }
 
     #endregion
 
     #region HELPERS
+
+    private void handleLocalization()
+    {
+        gbLangAndReg.Text = Resource.LangAndReg;
+        rbEn.Text = Resource.English;
+        rbHr.Text = Resource.Croatian;
+        gbWCGender.Text = Resource.WCGender;
+        rbMen.Text = Resource.Men;
+        rbWomen.Text = Resource.Women;
+        btnSaveSettings.Text = Resource.Save;
+        tpFavs.Text = Resource.Favs;
+        tpSettings.Text = Resource.Settings;
+        tpMatchStats.Text = Resource.MatchStats;
+        tpPlayerStats.Text = Resource.PlayerStats;
+        btnSaveFavs.Text = Resource.SaveFavs;
+        lbFavPlayers.Text = Resource.SelFavPlayers;
+        lbSelectFavTeam.Text = Resource.SelFavTeam;
+        miHelp.Text = Resource.Help;
+        miPrint.Text = Resource.Print;
+    }
 
     private string? GetSelectedFifaCode()
     {
@@ -82,7 +157,7 @@ public partial class Form1 : Form
         return null;
     }
 
-    private async void LoadTeamsAsync()
+    private async void LoadTeamsForCbAsync()
     {
         cbTeams.Items.Clear();
         cbTeams.Enabled = false;
@@ -91,8 +166,10 @@ public partial class Form1 : Form
         try
         {
             var teams = await _repo.GetTeams();
+            var sortedTeams = teams.ToList();
+            sortedTeams.Sort((x, y) => string.Compare(x.Country, y.Country, StringComparison.Ordinal));
 
-            foreach (var team in teams)
+            foreach (var team in sortedTeams)
             {
                 cbTeams.Items.Add($"{team.Country} ({team.FifaCode})");
             }
@@ -115,7 +192,7 @@ public partial class Form1 : Form
         }
     }
 
-    private async void LoadPlayersAsync()
+    private async void LoadPlayersForFlpAsync()
     {
         flpAllPlayers.Controls.Clear();
         Cursor = Cursors.WaitCursor;
@@ -129,32 +206,13 @@ public partial class Form1 : Form
 
             foreach (var player in sortedPlayers)
             {
-                var panel = new Panel
-                {
-                    Width = flpAllPlayers.Width,
-                    Height = 60,
-                    Margin = new Padding(5)
-                };
-
-                var playerImage = new PictureBox
-                {
-                    Width = 40,
-                    Height = 40,
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    Image = Image.FromFile("Images/default-player.png")
-                };
-
-                var lbl = new Label
-                {
-                    AutoSize = true,
-                    Location = new Point(50, 10),
-                    Text = $"{player.ShirtNumber}. {player.Name} \n[{player.Position}]" + (player.Captain ? " (C)" : "")
-                };
-
-                panel.Controls.Add(playerImage);
-                panel.Controls.Add(lbl);
-
-                flpAllPlayers.Controls.Add(panel);
+                var playerControl = new PlayerUserControl();
+                Image? image = null;
+                string imgPath = $"Images/{player.Name.ToLower().Replace(' ', '-')}.jpg";
+                if (File.Exists(imgPath))
+                    image = Image.FromFile(imgPath);
+                playerControl.SetPlayer(player, image);
+                flpAllPlayers.Controls.Add(playerControl);
             }
         }
         catch (Exception ex)
@@ -165,6 +223,20 @@ public partial class Form1 : Form
         {
             Cursor = Cursors.Default;
         }
+    }
+
+    private void RefreshSettings()
+    {
+        _appSettings = RepositoryFactory.GetAppSettings();
+        _repo = RepositoryFactory.GetRepository();
+
+        if(Thread.CurrentThread.CurrentUICulture.Name == _appSettings.LanguageAndRegion) return;
+
+        var culture = new CultureInfo(_appSettings.LanguageAndRegion);
+        Thread.CurrentThread.CurrentUICulture = culture;
+        Thread.CurrentThread.CurrentCulture = culture;
+
+        handleLocalization();
     }
 
     #endregion

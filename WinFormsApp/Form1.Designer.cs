@@ -37,7 +37,7 @@ partial class Form1
         rbWomen = new RadioButton();
         rbMen = new RadioButton();
         btnSaveSettings = new Button();
-        tpPlayers = new TabPage();
+        tpFavs = new TabPage();
         flpFavPlayers = new FlowLayoutPanel();
         flpAllPlayers = new FlowLayoutPanel();
         lbFavPlayers = new Label();
@@ -46,22 +46,22 @@ partial class Form1
         cbTeams = new ComboBox();
         tpPlayerStats = new TabPage();
         tpMatchStats = new TabPage();
-        menuStrip1 = new MenuStrip();
+        msMain = new MenuStrip();
         miPrint = new ToolStripMenuItem();
         miHelp = new ToolStripMenuItem();
         tcMain.SuspendLayout();
         tpSettings.SuspendLayout();
         gbLangAndReg.SuspendLayout();
         gbWCGender.SuspendLayout();
-        tpPlayers.SuspendLayout();
-        menuStrip1.SuspendLayout();
+        tpFavs.SuspendLayout();
+        msMain.SuspendLayout();
         SuspendLayout();
         // 
         // tcMain
         // 
         tcMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         tcMain.Controls.Add(tpSettings);
-        tcMain.Controls.Add(tpPlayers);
+        tcMain.Controls.Add(tpFavs);
         tcMain.Controls.Add(tpPlayerStats);
         tcMain.Controls.Add(tpMatchStats);
         tcMain.Location = new Point(3, 31);
@@ -160,40 +160,40 @@ partial class Form1
         btnSaveSettings.UseVisualStyleBackColor = true;
         btnSaveSettings.Click += btnSaveSettings_Click;
         // 
-        // tpPlayers
+        // tpFavs
         // 
-        tpPlayers.Controls.Add(flpFavPlayers);
-        tpPlayers.Controls.Add(flpAllPlayers);
-        tpPlayers.Controls.Add(lbFavPlayers);
-        tpPlayers.Controls.Add(lbSelectFavTeam);
-        tpPlayers.Controls.Add(btnSaveFavs);
-        tpPlayers.Controls.Add(cbTeams);
-        tpPlayers.Location = new Point(4, 29);
-        tpPlayers.Name = "tpPlayers";
-        tpPlayers.Padding = new Padding(3);
-        tpPlayers.Size = new Size(1015, 590);
-        tpPlayers.TabIndex = 2;
-        tpPlayers.Text = "Players";
-        tpPlayers.UseVisualStyleBackColor = true;
+        tpFavs.Controls.Add(flpFavPlayers);
+        tpFavs.Controls.Add(flpAllPlayers);
+        tpFavs.Controls.Add(lbFavPlayers);
+        tpFavs.Controls.Add(lbSelectFavTeam);
+        tpFavs.Controls.Add(btnSaveFavs);
+        tpFavs.Controls.Add(cbTeams);
+        tpFavs.Location = new Point(4, 29);
+        tpFavs.Name = "tpFavs";
+        tpFavs.Padding = new Padding(3);
+        tpFavs.Size = new Size(1015, 590);
+        tpFavs.TabIndex = 2;
+        tpFavs.Text = "Favorites";
+        tpFavs.UseVisualStyleBackColor = true;
         // 
         // flpFavPlayers
         // 
-        flpFavPlayers.Location = new Point(519, 132);
+        flpFavPlayers.Location = new Point(511, 126);
         flpFavPlayers.Name = "flpFavPlayers";
-        flpFavPlayers.Size = new Size(347, 348);
+        flpFavPlayers.Size = new Size(482, 348);
         flpFavPlayers.TabIndex = 6;
         // 
         // flpAllPlayers
         // 
-        flpAllPlayers.Location = new Point(133, 132);
+        flpAllPlayers.Location = new Point(23, 126);
         flpAllPlayers.Name = "flpAllPlayers";
-        flpAllPlayers.Size = new Size(347, 348);
+        flpAllPlayers.Size = new Size(482, 348);
         flpAllPlayers.TabIndex = 5;
         // 
         // lbFavPlayers
         // 
         lbFavPlayers.AutoSize = true;
-        lbFavPlayers.Location = new Point(37, 96);
+        lbFavPlayers.Location = new Point(37, 83);
         lbFavPlayers.Name = "lbFavPlayers";
         lbFavPlayers.Size = new Size(173, 20);
         lbFavPlayers.TabIndex = 4;
@@ -210,7 +210,7 @@ partial class Form1
         // 
         // btnSaveFavs
         // 
-        btnSaveFavs.Location = new Point(133, 512);
+        btnSaveFavs.Location = new Point(129, 505);
         btnSaveFavs.Name = "btnSaveFavs";
         btnSaveFavs.Size = new Size(733, 48);
         btnSaveFavs.TabIndex = 2;
@@ -247,15 +247,14 @@ partial class Form1
         tpMatchStats.Text = "Match Stats";
         tpMatchStats.UseVisualStyleBackColor = true;
         // 
-        // menuStrip1
+        // msMain
         // 
-        menuStrip1.ImageScalingSize = new Size(20, 20);
-        menuStrip1.Items.AddRange(new ToolStripItem[] { miPrint, miHelp });
-        menuStrip1.Location = new Point(0, 0);
-        menuStrip1.Name = "menuStrip1";
-        menuStrip1.Size = new Size(1027, 28);
-        menuStrip1.TabIndex = 1;
-        menuStrip1.Text = "msMain";
+        msMain.ImageScalingSize = new Size(20, 20);
+        msMain.Items.AddRange(new ToolStripItem[] { miPrint, miHelp });
+        msMain.Location = new Point(0, 0);
+        msMain.Name = "msMain";
+        msMain.Size = new Size(1027, 28);
+        msMain.TabIndex = 1;
         // 
         // miPrint
         // 
@@ -275,9 +274,9 @@ partial class Form1
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1027, 654);
         Controls.Add(tcMain);
-        Controls.Add(menuStrip1);
+        Controls.Add(msMain);
         Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
-        MainMenuStrip = menuStrip1;
+        MainMenuStrip = msMain;
         Name = "Form1";
         Text = "World Cup";
         Load += Form1_Load;
@@ -287,10 +286,10 @@ partial class Form1
         gbLangAndReg.PerformLayout();
         gbWCGender.ResumeLayout(false);
         gbWCGender.PerformLayout();
-        tpPlayers.ResumeLayout(false);
-        tpPlayers.PerformLayout();
-        menuStrip1.ResumeLayout(false);
-        menuStrip1.PerformLayout();
+        tpFavs.ResumeLayout(false);
+        tpFavs.PerformLayout();
+        msMain.ResumeLayout(false);
+        msMain.PerformLayout();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -306,11 +305,11 @@ partial class Form1
     private RadioButton rbEn;
     private RadioButton rbWomen;
     private RadioButton rbMen;
-    private TabPage tpPlayers;
+    private TabPage tpFavs;
     private ComboBox cbTeams;
     private TabPage tpPlayerStats;
     private TabPage tpMatchStats;
-    private MenuStrip menuStrip1;
+    private MenuStrip msMain;
     private Button btnSaveFavs;
     private ToolStripMenuItem miPrint;
     private ToolStripMenuItem miHelp;
