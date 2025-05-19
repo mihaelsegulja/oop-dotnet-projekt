@@ -1,6 +1,7 @@
 using DAL.Config;
 using DAL.Enums;
 using DAL.Repositories;
+using System.Drawing.Printing;
 using System.Globalization;
 
 namespace WinFormsApp;
@@ -9,6 +10,11 @@ public partial class Form1 : Form
 {
     private AppSettings _appSettings;
     private IRepository _repo;
+
+    private PrintDocument printDocument = new PrintDocument();
+    private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+    private DataGridView? printSourceDgv = null;
+    private string printTitle = "";
 
     public Form1()
     {
@@ -19,6 +25,26 @@ public partial class Form1 : Form
         this.KeyPreview = true;
         this.KeyDown += Form1_KeyDown;
         this.FormClosing += Form1_FormClosing;
+        miPrint.Click += miPrint_Click;
+        printDocument.PrintPage += PrintDocument_PrintPage;
+        miControls.Click += miControls_Click;
+    }
+
+    public class PlayerStats
+    {
+        public Image PlayerImage { get; set; }
+        public string PlayerName { get; set; }
+        public int Goals { get; set; }
+        public int YellowCards { get; set; }
+    }
+
+    public class MatchAttendanceInfo
+    {
+        public DateTimeOffset DateTime { get; set; }
+        public string HomeTeam { get; set; }
+        public string AwayTeam { get; set; }
+        public string Venue { get; set; }
+        public long Attendance { get; set; }
     }
 
     #region EVENTS
@@ -47,23 +73,37 @@ public partial class Form1 : Form
 
     private void tcMain_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (tcMain.SelectedTab == tpFavs)
+        switch (tcMain.SelectedTab)
         {
-            cbTeams.Items.Clear();
-            cbTeams.ResetText();
-            flpAllPlayers.AutoScroll = true;
-            flpFavPlayers.AutoScroll = true;
-            flpAllPlayers.BorderStyle = BorderStyle.FixedSingle;
-            flpFavPlayers.BorderStyle = BorderStyle.FixedSingle;
-            flpAllPlayers.Controls.Clear();
-            flpFavPlayers.Controls.Clear();
-            flpAllPlayers.AllowDrop = true;
-            flpFavPlayers.AllowDrop = true;
-            flpAllPlayers.DragEnter += FlpPanel_DragEnter;
-            flpFavPlayers.DragEnter += FlpPanel_DragEnter;
-            flpAllPlayers.DragDrop += FlpAllPlayers_DragDrop;
-            flpFavPlayers.DragDrop += FlpFavPlayers_DragDrop;
-            LoadTeamsForCbAsync();
+            case TabPage tp when tp == tpFavs:
+                cbTeams.Items.Clear();
+                cbTeams.ResetText();
+                flpAllPlayers.AutoScroll = true;
+                flpFavPlayers.AutoScroll = true;
+                flpAllPlayers.BorderStyle = BorderStyle.FixedSingle;
+                flpFavPlayers.BorderStyle = BorderStyle.FixedSingle;
+                flpAllPlayers.Controls.Clear();
+                flpFavPlayers.Controls.Clear();
+                flpAllPlayers.AllowDrop = true;
+                flpFavPlayers.AllowDrop = true;
+                flpAllPlayers.DragEnter += FlpPanel_DragEnter;
+                flpFavPlayers.DragEnter += FlpPanel_DragEnter;
+                flpAllPlayers.DragDrop += FlpAllPlayers_DragDrop;
+                flpFavPlayers.DragDrop += FlpFavPlayers_DragDrop;
+                miPrint.Enabled = false;
+                LoadTeamsForCbAsync();
+                break;
+            case TabPage tp when tp == tpMatchStats:
+                miPrint.Enabled = true;
+                LoadMatchAttendanceForDgvAsync();
+                break;
+            case TabPage tp when tp == tpPlayerStats:
+                miPrint.Enabled = true;
+                LoadPlayerStatsForDgvAsync();
+                break;
+            case TabPage tp when tp == tpSettings:
+                miPrint.Enabled = false;
+                break;
         }
     }
 
@@ -80,13 +120,17 @@ public partial class Form1 : Form
             return;
         }
 
+        Cursor = Cursors.WaitCursor;
+
         _appSettings.FavTeam = cbTeams.SelectedItem.ToString();
         _appSettings.FavPlayersList = flpFavPlayers.Controls
-        .OfType<PlayerUserControl>()
-        .Select(ctrl => ctrl.Player.Name)
-        .ToList();
+            .OfType<PlayerUserControl>()
+            .Select(ctrl => ctrl.Player.Name)
+            .ToList();
 
         RepositoryFactory.SaveAppSettings(_appSettings);
+
+        Cursor = Cursors.Default;
     }
 
     private void cbTeams_SelectedIndexChanged(object sender, EventArgs e)
@@ -122,6 +166,15 @@ public partial class Form1 : Form
                 case Keys.D3: tabIndex = 2; break;
                 case Keys.D4: tabIndex = 3; break;
                 case Keys.D5: tabIndex = 4; break;
+                case Keys.R:
+                    RefreshSettings();
+                    e.Handled = true;
+                    return;
+                case Keys.P:
+                    if (miPrint.Enabled) 
+                        miPrint.PerformClick();
+                    e.Handled = true;
+                    return;
             }
             if (tabIndex >= 0 && tabIndex < tcMain.TabPages.Count)
             {
@@ -172,6 +225,101 @@ public partial class Form1 : Form
         }
     }
 
+    private void miPrint_Click(object? sender, EventArgs e)
+    {
+        if (tcMain.SelectedTab == tpPlayerStats)
+        {
+            printSourceDgv = dgvPlayerStats;
+            printTitle = Resource.PlayerStats;
+        }
+        else if (tcMain.SelectedTab == tpMatchStats)
+        {
+            printSourceDgv = dgvMatchStats;
+            printTitle = Resource.MatchStats;
+        }
+        else
+        {
+            printSourceDgv = null;
+            return;
+        }
+
+        printPreviewDialog.Document = printDocument;
+        printPreviewDialog.Width = 1000;
+        printPreviewDialog.Height = 800;
+        printPreviewDialog.ShowDialog();
+
+    }
+
+    private void PrintDocument_PrintPage(object? sender, PrintPageEventArgs e)
+    {
+        if (printSourceDgv == null) return;
+
+        Font headerFont = new Font("Comic Sans MS", 12, FontStyle.Bold);
+        Font cellFont = new Font("Comic Sans MS", 10);
+        int x = e.MarginBounds.Left;
+        int y = e.MarginBounds.Top;
+        int rowHeight = cellFont.Height + 8;
+        int imageSize = 40;
+
+        e.Graphics.DrawString(printTitle, headerFont, Brushes.Black, x, y);
+        y += rowHeight + 10;
+
+        // Print column headers
+        int colX = x;
+        foreach (DataGridViewColumn col in printSourceDgv.Columns)
+        {
+            if (!col.Visible) continue;
+            e.Graphics.DrawString(col.HeaderText, headerFont, Brushes.Black, colX, y);
+            // If this is the image column, reserve more width
+            colX += (col is DataGridViewImageColumn) ? imageSize + 10 : 125;
+        }
+        y += rowHeight;
+
+        // Print rows
+        foreach (DataGridViewRow row in printSourceDgv.Rows)
+        {
+            if (row.IsNewRow) continue;
+            colX = x;
+            foreach (DataGridViewColumn col in printSourceDgv.Columns)
+            {
+                if (!col.Visible) continue;
+
+                if (col is DataGridViewImageColumn)
+                {
+                    // Draw image if present
+                    var cellValue = row.Cells[col.Index].Value;
+                    if (cellValue is Image img)
+                    {
+                        e.Graphics.DrawImage(img, colX, y, imageSize, imageSize);
+                    }
+                    colX += imageSize + 10;
+                }
+                else
+                {
+                    var value = row.Cells[col.Index].FormattedValue?.ToString() ?? "";
+                    e.Graphics.DrawString(value, cellFont, Brushes.Black, colX, y + (imageSize - rowHeight) / 2);
+                    colX += 125;
+                }
+            }
+            y += Math.Max(rowHeight, imageSize);
+            if (y > e.MarginBounds.Bottom - rowHeight)
+            {
+                e.HasMorePages = true;
+                return;
+            }
+        }
+        e.HasMorePages = false;
+    }
+
+    private void miControls_Click(object? sender, EventArgs e)
+    {
+        string message =
+            "Keyboard Shortcuts:\n\n" +
+            "Ctrl + 1 ... 5  - Switch between tabs\n" +
+            "Ctrl + R        - Refresh settings\n" +
+            "Ctrl + P        - Print (when available)\n";
+        MessageBox.Show(message, Resource.Controls, MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
 
     #endregion
 
@@ -193,13 +341,13 @@ public partial class Form1 : Form
         btnSaveFavs.Text = Resource.SaveFavs;
         lbFavPlayers.Text = Resource.SelFavPlayers;
         lbSelectFavTeam.Text = Resource.SelFavTeam;
-        miHelp.Text = Resource.Help;
+        miControls.Text = Resource.Controls;
         miPrint.Text = Resource.Print;
     }
 
-    private string? GetSelectedFifaCode()
+    private string? GetFifaCode(string selected)
     {
-        if (cbTeams.SelectedItem is string selected)
+        if (selected != null)
         {
             int start = selected.LastIndexOf('(');
             int end = selected.LastIndexOf(')');
@@ -251,7 +399,7 @@ public partial class Form1 : Form
 
         try
         {
-            string fifaCode = GetSelectedFifaCode();
+            string fifaCode = GetFifaCode(cbTeams.SelectedItem.ToString());
             var players = await _repo.GetPlayersByCountry(fifaCode);
             var sortedPlayers = players.ToList();
             sortedPlayers.Sort((x, y) => x.ShirtNumber.CompareTo(y.ShirtNumber));
@@ -317,6 +465,193 @@ public partial class Form1 : Form
         var selected = flpAllPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected).ToList();
         selected.AddRange(flpFavPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected));
         return selected;
+    }
+
+    private async Task<List<PlayerStats>> GetPlayerStatsAsync(string fifaCode)
+    {
+        var teamPlayers = await _repo.GetPlayersByCountry(fifaCode);
+        var playerNames = new HashSet<string>(teamPlayers.Select(p => p.Name));
+
+        var matches = await _repo.GetMatchesByTeam(fifaCode);
+        var playerStatsDict = new Dictionary<string, PlayerStats>();
+
+        foreach (var match in matches)
+        {
+            bool isHome = match.HomeTeam.Code == fifaCode;
+            bool isAway = match.AwayTeam.Code == fifaCode;
+
+            if (!isHome && !isAway)
+                continue;
+
+            var events = isHome ? match.HomeTeamEvents : match.AwayTeamEvents;
+
+            foreach (var ev in events)
+            {
+                if (string.IsNullOrEmpty(ev.Player) || !playerNames.Contains(ev.Player)) 
+                    continue;
+
+                if (!playerStatsDict.TryGetValue(ev.Player, out var stats))
+                {
+                    Image? img = null;
+                    string imgPath = $"Images/{ev.Player.ToLower().Replace(' ', '-')}.jpg";
+                    img = File.Exists(imgPath) ? Image.FromFile(imgPath) : Image.FromFile("Images/default-player.png");
+
+                    stats = new PlayerStats
+                    {
+                        PlayerName = ev.Player,
+                        PlayerImage = img,
+                        Goals = 0,
+                        YellowCards = 0
+                    };
+                    playerStatsDict[ev.Player] = stats;
+                }
+
+                if (ev.TypeOfEvent == TypeOfEvent.Goal || ev.TypeOfEvent == TypeOfEvent.GoalPenalty)
+                    stats.Goals++;
+                if (ev.TypeOfEvent == TypeOfEvent.YellowCard)
+                    stats.YellowCards++;
+            }
+        }
+
+        return playerStatsDict.Values
+            .OrderByDescending(s => s.Goals)
+            .ThenByDescending(s => s.YellowCards)
+            .ToList();
+    }
+
+    private async void LoadPlayerStatsForDgvAsync()
+    {
+        dgvPlayerStats.Rows.Clear();
+        dgvPlayerStats.Columns.Clear();
+
+        dgvPlayerStats.RowTemplate.Height = 65;
+
+        dgvPlayerStats.Columns.Add(new DataGridViewImageColumn 
+        { 
+            Name = "PlayerImage",
+            HeaderText = Resource.Image,
+            ImageLayout = DataGridViewImageCellLayout.Zoom
+        });
+        dgvPlayerStats.Columns.Add("Name", Resource.PlayerName);
+        dgvPlayerStats.Columns.Add("Goals", Resource.Goals);
+        dgvPlayerStats.Columns.Add("YellowCards", Resource.YellowCards);
+
+        dgvPlayerStats.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        dgvPlayerStats.Columns["Goals"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+        dgvPlayerStats.Columns["YellowCards"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+        dgvPlayerStats.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+        {
+            Alignment = DataGridViewContentAlignment.MiddleCenter,
+            Font = new Font(dgvPlayerStats.Font, FontStyle.Bold)
+        };
+
+        var centerStyle = new DataGridViewCellStyle
+        {
+            Alignment = DataGridViewContentAlignment.MiddleCenter
+        };
+
+        dgvPlayerStats.Columns["Name"].DefaultCellStyle = centerStyle;
+        dgvPlayerStats.Columns["Goals"].DefaultCellStyle = centerStyle;
+        dgvPlayerStats.Columns["YellowCards"].DefaultCellStyle = centerStyle;
+
+        Cursor = Cursors.WaitCursor;
+
+        try
+        {
+            string fifaCode = GetFifaCode(_appSettings.FavTeam);
+            if (string.IsNullOrEmpty(fifaCode)) return;
+
+            var stats = await GetPlayerStatsAsync(fifaCode);
+
+            foreach (var s in stats)
+            {
+                dgvPlayerStats.Rows.Add(s.PlayerImage, s.PlayerName, s.Goals, s.YellowCards);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading player stats: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            Cursor = Cursors.Default;
+        }
+        
+        dgvPlayerStats.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+    }
+
+    private async Task<List<MatchAttendanceInfo>> GetMatchAttendanceAsync(string fifaCode)
+    {
+        var matches = await _repo.GetMatchesByTeam(fifaCode);
+        return matches
+            .OrderByDescending(m => m.Attendance)
+            .Select(m => new MatchAttendanceInfo
+            {
+                DateTime = m.Datetime,
+                HomeTeam = m.HomeTeamCountry,
+                AwayTeam = m.AwayTeamCountry,
+                Venue = m.Venue,
+                Attendance = m.Attendance
+            })
+            .ToList();
+    }
+
+    private async void LoadMatchAttendanceForDgvAsync()
+    {
+        dgvMatchStats.Rows.Clear();
+        dgvMatchStats.Columns.Clear();
+
+        dgvMatchStats.Columns.Add("DateTime", Resource.DateTime);
+        dgvMatchStats.Columns.Add("HomeTeam", Resource.HomeTeam);
+        dgvMatchStats.Columns.Add("AwayTeam", Resource.AwayTeam);
+        dgvMatchStats.Columns.Add("Venue", Resource.Venue);
+        dgvMatchStats.Columns.Add("Attendance", Resource.Attendance);
+
+        dgvMatchStats.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+        {
+            Alignment = DataGridViewContentAlignment.MiddleCenter,
+            Font = new Font(dgvMatchStats.Font, FontStyle.Bold)
+        };
+
+        var centerStyle = new DataGridViewCellStyle
+        {
+            Alignment = DataGridViewContentAlignment.MiddleCenter
+        };
+        foreach (DataGridViewColumn col in dgvMatchStats.Columns)
+            col.DefaultCellStyle = centerStyle;
+
+        Cursor = Cursors.WaitCursor;
+
+        try
+        {
+            string fifaCode = GetFifaCode(_appSettings.FavTeam);
+            if (string.IsNullOrEmpty(fifaCode)) return;
+
+            var matches = await GetMatchAttendanceAsync(fifaCode);
+
+            foreach (var m in matches)
+            {
+                dgvMatchStats.Rows.Add(
+                    m.DateTime.ToString("g"),
+                    m.HomeTeam,
+                    m.AwayTeam,
+                    m.Venue,
+                    m.Attendance
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading match attendance: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            Cursor = Cursors.Default;
+        }
+
+        dgvMatchStats.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvMatchStats.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
     }
 
     #endregion

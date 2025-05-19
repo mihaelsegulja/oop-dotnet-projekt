@@ -61,6 +61,24 @@ namespace WinFormsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance.
+        /// </summary>
+        internal static string Attendance {
+            get {
+                return ResourceManager.GetString("Attendance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Away Team.
+        /// </summary>
+        internal static string AwayTeam {
+            get {
+                return ResourceManager.GetString("AwayTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -79,11 +97,29 @@ namespace WinFormsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Controls.
+        /// </summary>
+        internal static string Controls {
+            get {
+                return ResourceManager.GetString("Controls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Croatian.
         /// </summary>
         internal static string Croatian {
             get {
                 return ResourceManager.GetString("Croatian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date/Time.
+        /// </summary>
+        internal static string DateTime {
+            get {
+                return ResourceManager.GetString("DateTime", resourceCulture);
             }
         }
         
@@ -106,11 +142,38 @@ namespace WinFormsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Goals.
+        /// </summary>
+        internal static string Goals {
+            get {
+                return ResourceManager.GetString("Goals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         internal static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Team.
+        /// </summary>
+        internal static string HomeTeam {
+            get {
+                return ResourceManager.GetString("HomeTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        internal static string Image {
+            get {
+                return ResourceManager.GetString("Image", resourceCulture);
             }
         }
         
@@ -156,6 +219,24 @@ namespace WinFormsApp {
         internal static string Men {
             get {
                 return ResourceManager.GetString("Men", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player.
+        /// </summary>
+        internal static string Player {
+            get {
+                return ResourceManager.GetString("Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Name.
+        /// </summary>
+        internal static string PlayerName {
+            get {
+                return ResourceManager.GetString("PlayerName", resourceCulture);
             }
         }
         
@@ -241,6 +322,15 @@ namespace WinFormsApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Venue.
+        /// </summary>
+        internal static string Venue {
+            get {
+                return ResourceManager.GetString("Venue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to World Cup gender.
         /// </summary>
         internal static string WCGender {
@@ -264,6 +354,15 @@ namespace WinFormsApp {
         internal static string WorldCup {
             get {
                 return ResourceManager.GetString("WorldCup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow Cards.
+        /// </summary>
+        internal static string YellowCards {
+            get {
+                return ResourceManager.GetString("YellowCards", resourceCulture);
             }
         }
     }

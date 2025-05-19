@@ -45,15 +45,30 @@ partial class Form1
         btnSaveFavs = new Button();
         cbTeams = new ComboBox();
         tpPlayerStats = new TabPage();
+        dgvPlayerStats = new DataGridView();
+        PlayerImage = new DataGridViewImageColumn();
+        PlayerName = new DataGridViewTextBoxColumn();
+        Goals = new DataGridViewTextBoxColumn();
+        YellowCards = new DataGridViewTextBoxColumn();
         tpMatchStats = new TabPage();
+        dgvMatchStats = new DataGridView();
+        Date = new DataGridViewTextBoxColumn();
+        HomeTeam = new DataGridViewTextBoxColumn();
+        AwayTeam = new DataGridViewTextBoxColumn();
+        Venue = new DataGridViewTextBoxColumn();
+        Attendance = new DataGridViewTextBoxColumn();
         msMain = new MenuStrip();
         miPrint = new ToolStripMenuItem();
-        miHelp = new ToolStripMenuItem();
+        miControls = new ToolStripMenuItem();
         tcMain.SuspendLayout();
         tpSettings.SuspendLayout();
         gbLangAndReg.SuspendLayout();
         gbWCGender.SuspendLayout();
         tpFavs.SuspendLayout();
+        tpPlayerStats.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvPlayerStats).BeginInit();
+        tpMatchStats.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvMatchStats).BeginInit();
         msMain.SuspendLayout();
         SuspendLayout();
         // 
@@ -178,6 +193,7 @@ partial class Form1
         // 
         // flpFavPlayers
         // 
+        flpFavPlayers.BorderStyle = BorderStyle.Fixed3D;
         flpFavPlayers.Location = new Point(511, 126);
         flpFavPlayers.Name = "flpFavPlayers";
         flpFavPlayers.Size = new Size(482, 348);
@@ -185,6 +201,7 @@ partial class Form1
         // 
         // flpAllPlayers
         // 
+        flpAllPlayers.BorderStyle = BorderStyle.Fixed3D;
         flpAllPlayers.Location = new Point(23, 126);
         flpAllPlayers.Name = "flpAllPlayers";
         flpAllPlayers.Size = new Size(482, 348);
@@ -229,6 +246,7 @@ partial class Form1
         // 
         // tpPlayerStats
         // 
+        tpPlayerStats.Controls.Add(dgvPlayerStats);
         tpPlayerStats.Location = new Point(4, 29);
         tpPlayerStats.Name = "tpPlayerStats";
         tpPlayerStats.Padding = new Padding(3);
@@ -237,8 +255,47 @@ partial class Form1
         tpPlayerStats.Text = "Player Stats";
         tpPlayerStats.UseVisualStyleBackColor = true;
         // 
+        // dgvPlayerStats
+        // 
+        dgvPlayerStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvPlayerStats.Columns.AddRange(new DataGridViewColumn[] { PlayerImage, PlayerName, Goals, YellowCards });
+        dgvPlayerStats.Location = new Point(0, 0);
+        dgvPlayerStats.Name = "dgvPlayerStats";
+        dgvPlayerStats.RowHeadersWidth = 51;
+        dgvPlayerStats.Size = new Size(1015, 590);
+        dgvPlayerStats.TabIndex = 0;
+        // 
+        // PlayerImage
+        // 
+        PlayerImage.HeaderText = "Image";
+        PlayerImage.MinimumWidth = 6;
+        PlayerImage.Name = "PlayerImage";
+        PlayerImage.Width = 125;
+        // 
+        // PlayerName
+        // 
+        PlayerName.HeaderText = "Name";
+        PlayerName.MinimumWidth = 6;
+        PlayerName.Name = "PlayerName";
+        PlayerName.Width = 125;
+        // 
+        // Goals
+        // 
+        Goals.HeaderText = "Goals";
+        Goals.MinimumWidth = 6;
+        Goals.Name = "Goals";
+        Goals.Width = 125;
+        // 
+        // YellowCards
+        // 
+        YellowCards.HeaderText = "Yellow Cards";
+        YellowCards.MinimumWidth = 6;
+        YellowCards.Name = "YellowCards";
+        YellowCards.Width = 125;
+        // 
         // tpMatchStats
         // 
+        tpMatchStats.Controls.Add(dgvMatchStats);
         tpMatchStats.Location = new Point(4, 29);
         tpMatchStats.Name = "tpMatchStats";
         tpMatchStats.Padding = new Padding(3);
@@ -247,10 +304,55 @@ partial class Form1
         tpMatchStats.Text = "Match Stats";
         tpMatchStats.UseVisualStyleBackColor = true;
         // 
+        // dgvMatchStats
+        // 
+        dgvMatchStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvMatchStats.Columns.AddRange(new DataGridViewColumn[] { Date, HomeTeam, AwayTeam, Venue, Attendance });
+        dgvMatchStats.Location = new Point(0, 0);
+        dgvMatchStats.Name = "dgvMatchStats";
+        dgvMatchStats.RowHeadersWidth = 51;
+        dgvMatchStats.Size = new Size(1015, 590);
+        dgvMatchStats.TabIndex = 0;
+        // 
+        // Date
+        // 
+        Date.HeaderText = "Date";
+        Date.MinimumWidth = 6;
+        Date.Name = "Date";
+        Date.Width = 125;
+        // 
+        // HomeTeam
+        // 
+        HomeTeam.HeaderText = "Home Team";
+        HomeTeam.MinimumWidth = 6;
+        HomeTeam.Name = "HomeTeam";
+        HomeTeam.Width = 125;
+        // 
+        // AwayTeam
+        // 
+        AwayTeam.HeaderText = "Away Team";
+        AwayTeam.MinimumWidth = 6;
+        AwayTeam.Name = "AwayTeam";
+        AwayTeam.Width = 125;
+        // 
+        // Venue
+        // 
+        Venue.HeaderText = "Venue";
+        Venue.MinimumWidth = 6;
+        Venue.Name = "Venue";
+        Venue.Width = 125;
+        // 
+        // Attendance
+        // 
+        Attendance.HeaderText = "Attendance";
+        Attendance.MinimumWidth = 6;
+        Attendance.Name = "Attendance";
+        Attendance.Width = 125;
+        // 
         // msMain
         // 
         msMain.ImageScalingSize = new Size(20, 20);
-        msMain.Items.AddRange(new ToolStripItem[] { miPrint, miHelp });
+        msMain.Items.AddRange(new ToolStripItem[] { miPrint, miControls });
         msMain.Location = new Point(0, 0);
         msMain.Name = "msMain";
         msMain.Size = new Size(1027, 28);
@@ -262,11 +364,11 @@ partial class Form1
         miPrint.Size = new Size(53, 24);
         miPrint.Text = "Print";
         // 
-        // miHelp
+        // miControls
         // 
-        miHelp.Name = "miHelp";
-        miHelp.Size = new Size(55, 24);
-        miHelp.Text = "Help";
+        miControls.Name = "miControls";
+        miControls.Size = new Size(78, 24);
+        miControls.Text = "Controls";
         // 
         // Form1
         // 
@@ -288,6 +390,10 @@ partial class Form1
         gbWCGender.PerformLayout();
         tpFavs.ResumeLayout(false);
         tpFavs.PerformLayout();
+        tpPlayerStats.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvPlayerStats).EndInit();
+        tpMatchStats.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvMatchStats).EndInit();
         msMain.ResumeLayout(false);
         msMain.PerformLayout();
         ResumeLayout(false);
@@ -312,9 +418,20 @@ partial class Form1
     private MenuStrip msMain;
     private Button btnSaveFavs;
     private ToolStripMenuItem miPrint;
-    private ToolStripMenuItem miHelp;
     private Label lbSelectFavTeam;
     private Label lbFavPlayers;
     private FlowLayoutPanel flpFavPlayers;
     private FlowLayoutPanel flpAllPlayers;
+    private DataGridView dgvPlayerStats;
+    private DataGridViewImageColumn PlayerImage;
+    private DataGridViewTextBoxColumn PlayerName;
+    private DataGridViewTextBoxColumn Goals;
+    private DataGridViewTextBoxColumn YellowCards;
+    private ToolStripMenuItem miControls;
+    private DataGridView dgvMatchStats;
+    private DataGridViewTextBoxColumn Date;
+    private DataGridViewTextBoxColumn HomeTeam;
+    private DataGridViewTextBoxColumn AwayTeam;
+    private DataGridViewTextBoxColumn Venue;
+    private DataGridViewTextBoxColumn Attendance;
 }

@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Attendance" xml:space="preserve">
+    <value>Attendance</value>
+  </data>
+  <data name="AwayTeam" xml:space="preserve">
+    <value>Away Team</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="ConfirmExit" xml:space="preserve">
     <value>Confirm exit</value>
   </data>
+  <data name="Controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
   <data name="Croatian" xml:space="preserve">
     <value>Croatian</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>Date/Time</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
@@ -132,8 +144,17 @@
   <data name="Favs" xml:space="preserve">
     <value>Favorites</value>
   </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Goals</value>
+  </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="HomeTeam" xml:space="preserve">
+    <value>Home Team</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
   </data>
   <data name="InfoSelFavPlayers" xml:space="preserve">
     <value>Please select at least 1 (one) favorite player.</value>
@@ -149,6 +170,12 @@
   </data>
   <data name="Men" xml:space="preserve">
     <value>Men</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="PlayerName" xml:space="preserve">
+    <value>Player Name</value>
   </data>
   <data name="PlayerStats" xml:space="preserve">
     <value>Player statistics</value>
@@ -177,6 +204,9 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Venue" xml:space="preserve">
+    <value>Venue</value>
+  </data>
   <data name="WCGender" xml:space="preserve">
     <value>World Cup gender</value>
   </data>
@@ -185,5 +215,8 @@
   </data>
   <data name="WorldCup" xml:space="preserve">
     <value>World Cup</value>
+  </data>
+  <data name="YellowCards" xml:space="preserve">
+    <value>Yellow Cards</value>
   </data>
 </root>
