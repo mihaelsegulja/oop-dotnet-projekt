@@ -136,7 +136,7 @@
     <value>Help</value>
   </data>
   <data name="InfoSelFavPlayers" xml:space="preserve">
-    <value>Please select 3 (three) favorite players.</value>
+    <value>Please select at least 1 (one) favorite player.</value>
   </data>
   <data name="InfoSelFavTeam" xml:space="preserve">
     <value>Please select a favorite team.</value>

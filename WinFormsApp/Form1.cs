@@ -59,6 +59,10 @@ public partial class Form1 : Form
             flpFavPlayers.Controls.Clear();
             flpAllPlayers.AllowDrop = true;
             flpFavPlayers.AllowDrop = true;
+            flpAllPlayers.DragEnter += FlpPanel_DragEnter;
+            flpFavPlayers.DragEnter += FlpPanel_DragEnter;
+            flpAllPlayers.DragDrop += FlpAllPlayers_DragDrop;
+            flpFavPlayers.DragDrop += FlpFavPlayers_DragDrop;
             LoadTeamsForCbAsync();
         }
     }
@@ -77,6 +81,10 @@ public partial class Form1 : Form
         }
 
         _appSettings.FavTeam = cbTeams.SelectedItem.ToString();
+        _appSettings.FavPlayersList = flpFavPlayers.Controls
+        .OfType<PlayerUserControl>()
+        .Select(ctrl => ctrl.Player.Name)
+        .ToList();
 
         RepositoryFactory.SaveAppSettings(_appSettings);
     }
@@ -113,6 +121,7 @@ public partial class Form1 : Form
                 case Keys.D2: tabIndex = 1; break;
                 case Keys.D3: tabIndex = 2; break;
                 case Keys.D4: tabIndex = 3; break;
+                case Keys.D5: tabIndex = 4; break;
             }
             if (tabIndex >= 0 && tabIndex < tcMain.TabPages.Count)
             {
@@ -121,12 +130,54 @@ public partial class Form1 : Form
             }
         }
     }
+    private void FlpPanel_DragEnter(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(typeof(List<PlayerUserControl>)))
+            e.Effect = DragDropEffects.Move;
+        else
+            e.Effect = DragDropEffects.None;
+    }
+
+    private void FlpAllPlayers_DragDrop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(typeof(List<PlayerUserControl>)))
+        {
+            var controls = (List<PlayerUserControl>)e.Data.GetData(typeof(List<PlayerUserControl>));
+            foreach (var ctrl in controls)
+            {
+                if (flpFavPlayers.Controls.Contains(ctrl))
+                {
+                    flpFavPlayers.Controls.Remove(ctrl);
+                    ctrl.UpdateFavorite(false);
+                    flpAllPlayers.Controls.Add(ctrl);
+                }
+            }
+        }
+    }
+
+    private void FlpFavPlayers_DragDrop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(typeof(List<PlayerUserControl>)))
+        {
+            var controls = (List<PlayerUserControl>)e.Data.GetData(typeof(List<PlayerUserControl>));
+            foreach (var ctrl in controls)
+            {
+                if (flpAllPlayers.Controls.Contains(ctrl))
+                {
+                    flpAllPlayers.Controls.Remove(ctrl);
+                    ctrl.UpdateFavorite(true);
+                    flpFavPlayers.Controls.Add(ctrl);
+                }
+            }
+        }
+    }
+
 
     #endregion
 
     #region HELPERS
 
-    private void handleLocalization()
+    private void HandleLocalization()
     {
         gbLangAndReg.Text = Resource.LangAndReg;
         rbEn.Text = Resource.English;
@@ -195,6 +246,7 @@ public partial class Form1 : Form
     private async void LoadPlayersForFlpAsync()
     {
         flpAllPlayers.Controls.Clear();
+        flpFavPlayers.Controls.Clear();
         Cursor = Cursors.WaitCursor;
 
         try
@@ -204,6 +256,8 @@ public partial class Form1 : Form
             var sortedPlayers = players.ToList();
             sortedPlayers.Sort((x, y) => x.ShirtNumber.CompareTo(y.ShirtNumber));
 
+            string? selectedTeam = _appSettings.FavTeam;
+
             foreach (var player in sortedPlayers)
             {
                 var playerControl = new PlayerUserControl();
@@ -211,8 +265,19 @@ public partial class Form1 : Form
                 string imgPath = $"Images/{player.Name.ToLower().Replace(' ', '-')}.jpg";
                 if (File.Exists(imgPath))
                     image = Image.FromFile(imgPath);
-                playerControl.SetPlayer(player, image);
-                flpAllPlayers.Controls.Add(playerControl);
+
+                if (_appSettings.FavPlayersList != null
+                    && _appSettings.FavPlayersList.Contains(player.Name)
+                    && cbTeams.SelectedItem?.ToString() == selectedTeam)
+                {
+                    playerControl.SetPlayer(player, image, true);
+                    flpFavPlayers.Controls.Add(playerControl);
+                }
+                else
+                {
+                    playerControl.SetPlayer(player, image, false);
+                    flpAllPlayers.Controls.Add(playerControl);
+                }
             }
         }
         catch (Exception ex)
@@ -236,7 +301,22 @@ public partial class Form1 : Form
         Thread.CurrentThread.CurrentUICulture = culture;
         Thread.CurrentThread.CurrentCulture = culture;
 
-        handleLocalization();
+        HandleLocalization();
+    }
+
+    public void ClearAllPlayerSelections()
+    {
+        foreach (var ctrl in flpAllPlayers.Controls.OfType<PlayerUserControl>())
+            ctrl.SetSelected(false);
+        foreach (var ctrl in flpFavPlayers.Controls.OfType<PlayerUserControl>())
+            ctrl.SetSelected(false);
+    }
+
+    public List<PlayerUserControl> GetSelectedPlayerControls()
+    {
+        var selected = flpAllPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected).ToList();
+        selected.AddRange(flpFavPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected));
+        return selected;
     }
 
     #endregion

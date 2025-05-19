@@ -136,7 +136,7 @@
     <value>Pomoć</value>
   </data>
   <data name="InfoSelFavPlayers" xml:space="preserve">
-    <value>Molim odaberite 3 (tri) favorit igrača.</value>
+    <value>Molim odaberite barem 1 (jedan) favorit igrača.</value>
   </data>
   <data name="InfoSelFavTeam" xml:space="preserve">
     <value>Molim odaberite favorit tim.</value>

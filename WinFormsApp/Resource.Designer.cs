@@ -115,7 +115,7 @@ namespace WinFormsApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select 3 (three) favorite players..
+        ///   Looks up a localized string similar to Please select at least 1 (one) favorite player..
         /// </summary>
         internal static string InfoSelFavPlayers {
             get {
