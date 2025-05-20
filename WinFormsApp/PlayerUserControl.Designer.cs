@@ -31,8 +31,10 @@ partial class PlayerUserControl
         pbPlayerImage = new PictureBox();
         pbFavIcon = new PictureBox();
         lbPlayerInfo = new Label();
+        pbDragHandle = new PictureBox();
         ((System.ComponentModel.ISupportInitialize)pbPlayerImage).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pbFavIcon).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pbDragHandle).BeginInit();
         SuspendLayout();
         // 
         // pbPlayerImage
@@ -60,19 +62,33 @@ partial class PlayerUserControl
         lbPlayerInfo.TabIndex = 2;
         lbPlayerInfo.Text = "lbPlayerInfo";
         // 
+        // pbDragHandle
+        // 
+        pbDragHandle.Location = new Point(109, 59);
+        pbDragHandle.Name = "pbDragHandle";
+        pbDragHandle.Size = new Size(234, 49);
+        pbDragHandle.TabIndex = 3;
+        pbDragHandle.TabStop = false;
+        pbDragHandle.MouseDown += PbDragHandle_MouseDown;
+        pbDragHandle.MouseMove += PbDragHandle_MouseMove;
+        pbDragHandle.MouseUp += PbDragHandle_MouseUp;
+        // 
         // PlayerUserControl
         // 
         AutoScaleDimensions = new SizeF(9F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         BorderStyle = BorderStyle.Fixed3D;
+        Controls.Add(pbDragHandle);
         Controls.Add(pbFavIcon);
         Controls.Add(lbPlayerInfo);
         Controls.Add(pbPlayerImage);
         Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
         Name = "PlayerUserControl";
         Size = new Size(428, 106);
+        Click += PlayerUserControl_Click;
         ((System.ComponentModel.ISupportInitialize)pbPlayerImage).EndInit();
         ((System.ComponentModel.ISupportInitialize)pbFavIcon).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pbDragHandle).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -82,4 +98,5 @@ partial class PlayerUserControl
     private PictureBox pbPlayerImage;
     private PictureBox pbFavIcon;
     private Label lbPlayerInfo;
+    private PictureBox pbDragHandle;
 }

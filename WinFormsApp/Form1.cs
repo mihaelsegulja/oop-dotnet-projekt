@@ -22,12 +22,7 @@ public partial class Form1 : Form
 
         RefreshSettings();
 
-        this.KeyPreview = true;
-        this.KeyDown += Form1_KeyDown;
-        this.FormClosing += Form1_FormClosing;
-        miPrint.Click += miPrint_Click;
         printDocument.PrintPage += PrintDocument_PrintPage;
-        miControls.Click += miControls_Click;
     }
 
     public class PlayerStats
@@ -55,11 +50,13 @@ public partial class Form1 : Form
         _appSettings.WorldCupGender = rbMen.Checked ? WorldCupGender.Men : WorldCupGender.Women;
 
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         RepositoryFactory.SaveAppSettings(_appSettings);
         RefreshSettings();
 
         Cursor = Cursors.Default;
+        pbMain.Visible = false;
     }
 
     private void Form1_Load(object sender, EventArgs e)
@@ -76,20 +73,6 @@ public partial class Form1 : Form
         switch (tcMain.SelectedTab)
         {
             case TabPage tp when tp == tpFavs:
-                cbTeams.Items.Clear();
-                cbTeams.ResetText();
-                flpAllPlayers.AutoScroll = true;
-                flpFavPlayers.AutoScroll = true;
-                flpAllPlayers.BorderStyle = BorderStyle.FixedSingle;
-                flpFavPlayers.BorderStyle = BorderStyle.FixedSingle;
-                flpAllPlayers.Controls.Clear();
-                flpFavPlayers.Controls.Clear();
-                flpAllPlayers.AllowDrop = true;
-                flpFavPlayers.AllowDrop = true;
-                flpAllPlayers.DragEnter += FlpPanel_DragEnter;
-                flpFavPlayers.DragEnter += FlpPanel_DragEnter;
-                flpAllPlayers.DragDrop += FlpAllPlayers_DragDrop;
-                flpFavPlayers.DragDrop += FlpFavPlayers_DragDrop;
                 miPrint.Enabled = false;
                 LoadTeamsForCbAsync();
                 break;
@@ -121,6 +104,7 @@ public partial class Form1 : Form
         }
 
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         _appSettings.FavTeam = cbTeams.SelectedItem.ToString();
         _appSettings.FavPlayersList = flpFavPlayers.Controls
@@ -131,6 +115,7 @@ public partial class Form1 : Form
         RepositoryFactory.SaveAppSettings(_appSettings);
 
         Cursor = Cursors.Default;
+        pbMain.Visible = false;
     }
 
     private void cbTeams_SelectedIndexChanged(object sender, EventArgs e)
@@ -149,9 +134,7 @@ public partial class Form1 : Form
         );
 
         if (result != DialogResult.OK)
-        {
             e.Cancel = true;
-        }
     }
 
     private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -165,16 +148,15 @@ public partial class Form1 : Form
                 case Keys.D2: tabIndex = 1; break;
                 case Keys.D3: tabIndex = 2; break;
                 case Keys.D4: tabIndex = 3; break;
-                case Keys.D5: tabIndex = 4; break;
-                case Keys.R:
-                    RefreshSettings();
+                case Keys.Q:
+                    Close();
                     e.Handled = true;
-                    return;
+                    break;
                 case Keys.P:
-                    if (miPrint.Enabled) 
+                    if (miPrint.Enabled)
                         miPrint.PerformClick();
                     e.Handled = true;
-                    return;
+                    break;
             }
             if (tabIndex >= 0 && tabIndex < tcMain.TabPages.Count)
             {
@@ -225,7 +207,7 @@ public partial class Form1 : Form
         }
     }
 
-    private void miPrint_Click(object? sender, EventArgs e)
+    private void miPrint_Click(object sender, EventArgs e)
     {
         if (tcMain.SelectedTab == tpPlayerStats)
         {
@@ -250,7 +232,7 @@ public partial class Form1 : Form
 
     }
 
-    private void PrintDocument_PrintPage(object? sender, PrintPageEventArgs e)
+    private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
     {
         if (printSourceDgv == null) return;
 
@@ -264,18 +246,15 @@ public partial class Form1 : Form
         e.Graphics.DrawString(printTitle, headerFont, Brushes.Black, x, y);
         y += rowHeight + 10;
 
-        // Print column headers
         int colX = x;
         foreach (DataGridViewColumn col in printSourceDgv.Columns)
         {
             if (!col.Visible) continue;
             e.Graphics.DrawString(col.HeaderText, headerFont, Brushes.Black, colX, y);
-            // If this is the image column, reserve more width
             colX += (col is DataGridViewImageColumn) ? imageSize + 10 : 125;
         }
         y += rowHeight;
 
-        // Print rows
         foreach (DataGridViewRow row in printSourceDgv.Rows)
         {
             if (row.IsNewRow) continue;
@@ -286,7 +265,6 @@ public partial class Form1 : Form
 
                 if (col is DataGridViewImageColumn)
                 {
-                    // Draw image if present
                     var cellValue = row.Cells[col.Index].Value;
                     if (cellValue is Image img)
                     {
@@ -302,22 +280,17 @@ public partial class Form1 : Form
                 }
             }
             y += Math.Max(rowHeight, imageSize);
-            if (y > e.MarginBounds.Bottom - rowHeight)
-            {
-                e.HasMorePages = true;
-                return;
-            }
         }
-        e.HasMorePages = false;
     }
 
-    private void miControls_Click(object? sender, EventArgs e)
+    private void miControls_Click(object sender, EventArgs e)
     {
         string message =
             "Keyboard Shortcuts:\n\n" +
-            "Ctrl + 1 ... 5  - Switch between tabs\n" +
-            "Ctrl + R        - Refresh settings\n" +
-            "Ctrl + P        - Print (when available)\n";
+            "Ctrl + 1 ... 4     - Switch between tabs\n" +
+            "Ctrl + Q           - Quit\n" +
+            "Ctrl + P           - Print (when available)\n" +
+            "Ctrl + Mouse Click - Multi select";
         MessageBox.Show(message, Resource.Controls, MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
@@ -360,7 +333,11 @@ public partial class Form1 : Form
     {
         cbTeams.Items.Clear();
         cbTeams.Enabled = false;
+        cbTeams.ResetText();
+        flpAllPlayers.Controls.Clear();
+        flpFavPlayers.Controls.Clear();
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         try
         {
@@ -388,6 +365,7 @@ public partial class Form1 : Form
         {
             cbTeams.Enabled = true;
             Cursor = Cursors.Default;
+            pbMain.Visible = false;
         }
     }
 
@@ -396,6 +374,7 @@ public partial class Form1 : Form
         flpAllPlayers.Controls.Clear();
         flpFavPlayers.Controls.Clear();
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         try
         {
@@ -435,6 +414,7 @@ public partial class Form1 : Form
         finally
         {
             Cursor = Cursors.Default;
+            pbMain.Visible = false;
         }
     }
 
@@ -443,7 +423,8 @@ public partial class Form1 : Form
         _appSettings = RepositoryFactory.GetAppSettings();
         _repo = RepositoryFactory.GetRepository();
 
-        if(Thread.CurrentThread.CurrentUICulture.Name == _appSettings.LanguageAndRegion) return;
+        if(Thread.CurrentThread.CurrentUICulture.Name == _appSettings.LanguageAndRegion) 
+            return;
 
         var culture = new CultureInfo(_appSettings.LanguageAndRegion);
         Thread.CurrentThread.CurrentUICulture = culture;
@@ -524,8 +505,6 @@ public partial class Form1 : Form
         dgvPlayerStats.Rows.Clear();
         dgvPlayerStats.Columns.Clear();
 
-        dgvPlayerStats.RowTemplate.Height = 65;
-
         dgvPlayerStats.Columns.Add(new DataGridViewImageColumn 
         { 
             Name = "PlayerImage",
@@ -540,22 +519,8 @@ public partial class Form1 : Form
         dgvPlayerStats.Columns["Goals"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
         dgvPlayerStats.Columns["YellowCards"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-        dgvPlayerStats.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-        {
-            Alignment = DataGridViewContentAlignment.MiddleCenter,
-            Font = new Font(dgvPlayerStats.Font, FontStyle.Bold)
-        };
-
-        var centerStyle = new DataGridViewCellStyle
-        {
-            Alignment = DataGridViewContentAlignment.MiddleCenter
-        };
-
-        dgvPlayerStats.Columns["Name"].DefaultCellStyle = centerStyle;
-        dgvPlayerStats.Columns["Goals"].DefaultCellStyle = centerStyle;
-        dgvPlayerStats.Columns["YellowCards"].DefaultCellStyle = centerStyle;
-
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         try
         {
@@ -576,6 +541,7 @@ public partial class Form1 : Form
         finally
         {
             Cursor = Cursors.Default;
+            pbMain.Visible = false;
         }
         
         dgvPlayerStats.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -608,20 +574,8 @@ public partial class Form1 : Form
         dgvMatchStats.Columns.Add("Venue", Resource.Venue);
         dgvMatchStats.Columns.Add("Attendance", Resource.Attendance);
 
-        dgvMatchStats.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-        {
-            Alignment = DataGridViewContentAlignment.MiddleCenter,
-            Font = new Font(dgvMatchStats.Font, FontStyle.Bold)
-        };
-
-        var centerStyle = new DataGridViewCellStyle
-        {
-            Alignment = DataGridViewContentAlignment.MiddleCenter
-        };
-        foreach (DataGridViewColumn col in dgvMatchStats.Columns)
-            col.DefaultCellStyle = centerStyle;
-
         Cursor = Cursors.WaitCursor;
+        pbMain.Visible = true;
 
         try
         {
@@ -648,6 +602,7 @@ public partial class Form1 : Form
         finally
         {
             Cursor = Cursors.Default;
+            pbMain.Visible = false;
         }
 
         dgvMatchStats.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

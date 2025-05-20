@@ -28,6 +28,12 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
+        DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
         tcMain = new TabControl();
         tpSettings = new TabPage();
         gbLangAndReg = new GroupBox();
@@ -60,6 +66,7 @@ partial class Form1
         msMain = new MenuStrip();
         miPrint = new ToolStripMenuItem();
         miControls = new ToolStripMenuItem();
+        pbMain = new ProgressBar();
         tcMain.SuspendLayout();
         tpSettings.SuspendLayout();
         gbLangAndReg.SuspendLayout();
@@ -193,19 +200,27 @@ partial class Form1
         // 
         // flpFavPlayers
         // 
+        flpFavPlayers.AllowDrop = true;
+        flpFavPlayers.AutoScroll = true;
         flpFavPlayers.BorderStyle = BorderStyle.Fixed3D;
         flpFavPlayers.Location = new Point(511, 126);
         flpFavPlayers.Name = "flpFavPlayers";
         flpFavPlayers.Size = new Size(482, 348);
         flpFavPlayers.TabIndex = 6;
+        flpFavPlayers.DragDrop += FlpFavPlayers_DragDrop;
+        flpFavPlayers.DragEnter += FlpPanel_DragEnter;
         // 
         // flpAllPlayers
         // 
+        flpAllPlayers.AllowDrop = true;
+        flpAllPlayers.AutoScroll = true;
         flpAllPlayers.BorderStyle = BorderStyle.Fixed3D;
         flpAllPlayers.Location = new Point(23, 126);
         flpAllPlayers.Name = "flpAllPlayers";
         flpAllPlayers.Size = new Size(482, 348);
         flpAllPlayers.TabIndex = 5;
+        flpAllPlayers.DragDrop += FlpAllPlayers_DragDrop;
+        flpAllPlayers.DragEnter += FlpPanel_DragEnter;
         // 
         // lbFavPlayers
         // 
@@ -257,11 +272,30 @@ partial class Form1
         // 
         // dgvPlayerStats
         // 
+        dataGridViewCellStyle7.BackColor = Color.WhiteSmoke;
+        dgvPlayerStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+        dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle8.BackColor = SystemColors.Control;
+        dataGridViewCellStyle8.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+        dgvPlayerStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
         dgvPlayerStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvPlayerStats.Columns.AddRange(new DataGridViewColumn[] { PlayerImage, PlayerName, Goals, YellowCards });
+        dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle9.BackColor = SystemColors.Window;
+        dataGridViewCellStyle9.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
+        dgvPlayerStats.DefaultCellStyle = dataGridViewCellStyle9;
         dgvPlayerStats.Location = new Point(0, 0);
         dgvPlayerStats.Name = "dgvPlayerStats";
         dgvPlayerStats.RowHeadersWidth = 51;
+        dgvPlayerStats.RowTemplate.Height = 65;
         dgvPlayerStats.Size = new Size(1015, 590);
         dgvPlayerStats.TabIndex = 0;
         // 
@@ -306,8 +340,26 @@ partial class Form1
         // 
         // dgvMatchStats
         // 
+        dataGridViewCellStyle10.BackColor = Color.WhiteSmoke;
+        dgvMatchStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+        dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle11.BackColor = SystemColors.Control;
+        dataGridViewCellStyle11.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle11.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
+        dgvMatchStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
         dgvMatchStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvMatchStats.Columns.AddRange(new DataGridViewColumn[] { Date, HomeTeam, AwayTeam, Venue, Attendance });
+        dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle12.BackColor = SystemColors.Window;
+        dataGridViewCellStyle12.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle12.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
+        dgvMatchStats.DefaultCellStyle = dataGridViewCellStyle12;
         dgvMatchStats.Location = new Point(0, 0);
         dgvMatchStats.Name = "dgvMatchStats";
         dgvMatchStats.RowHeadersWidth = 51;
@@ -363,25 +415,41 @@ partial class Form1
         miPrint.Name = "miPrint";
         miPrint.Size = new Size(53, 24);
         miPrint.Text = "Print";
+        miPrint.Click += miPrint_Click;
         // 
         // miControls
         // 
         miControls.Name = "miControls";
         miControls.Size = new Size(78, 24);
         miControls.Text = "Controls";
+        miControls.Click += miControls_Click;
+        // 
+        // pbMain
+        // 
+        pbMain.Dock = DockStyle.Bottom;
+        pbMain.Location = new Point(0, 625);
+        pbMain.Name = "pbMain";
+        pbMain.Size = new Size(1027, 29);
+        pbMain.Style = ProgressBarStyle.Marquee;
+        pbMain.TabIndex = 5;
+        pbMain.Visible = false;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(9F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1027, 654);
+        Controls.Add(pbMain);
         Controls.Add(tcMain);
         Controls.Add(msMain);
         Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+        KeyPreview = true;
         MainMenuStrip = msMain;
         Name = "Form1";
         Text = "World Cup";
+        FormClosing += Form1_FormClosing;
         Load += Form1_Load;
+        KeyDown += Form1_KeyDown;
         tcMain.ResumeLayout(false);
         tpSettings.ResumeLayout(false);
         gbLangAndReg.ResumeLayout(false);
@@ -434,4 +502,5 @@ partial class Form1
     private DataGridViewTextBoxColumn AwayTeam;
     private DataGridViewTextBoxColumn Venue;
     private DataGridViewTextBoxColumn Attendance;
+    private ProgressBar pbMain;
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Data;
 using DAL.Models;
 
 namespace WinFormsApp;
@@ -19,11 +11,11 @@ public partial class PlayerUserControl : UserControl
     public event EventHandler? SelectionChanged;
     
     private Point _dragStartPoint;
+    private bool _dragInitiated = false;
 
     public PlayerUserControl()
     {
         InitializeComponent();
-        this.Click += PlayerUserControl_Click;
         foreach (Control c in this.Controls)
             c.Click += PlayerUserControl_Click;
     }
@@ -35,10 +27,11 @@ public partial class PlayerUserControl : UserControl
         lbPlayerInfo.AutoSize = true;
         pbPlayerImage.Image = image ?? Image.FromFile("Images/default-player.png");
         pbPlayerImage.SizeMode = PictureBoxSizeMode.Zoom;
-        IsFavorite = isFav;
-        pbFavIcon.Image = isFav ? Image.FromFile("Images/star-icon.png") : null;
+        UpdateFavorite(isFav);
         pbFavIcon.SizeMode = PictureBoxSizeMode.Zoom;
         SetSelected(false);
+        pbDragHandle.Image = Image.FromFile("Images/drag-handle.png");
+        pbDragHandle.SizeMode = PictureBoxSizeMode.Zoom;
     }
 
     public void SetSelected(bool selected)
@@ -71,32 +64,38 @@ public partial class PlayerUserControl : UserControl
         }
     }
 
-    protected override void OnMouseDown(MouseEventArgs e)
+    private void PbDragHandle_MouseDown(object? sender, MouseEventArgs e)
     {
-        base.OnMouseDown(e);
         if (e.Button == MouseButtons.Left)
+        {
             _dragStartPoint = e.Location;
+            _dragInitiated = true;
+        }
     }
 
-    protected override void OnMouseMove(MouseEventArgs e)
+    private void PbDragHandle_MouseMove(object? sender, MouseEventArgs e)
     {
-        base.OnMouseMove(e);
-        if (e.Button == MouseButtons.Left)
+        if (_dragInitiated && e.Button == MouseButtons.Left)
         {
             if (Math.Abs(e.X - _dragStartPoint.X) > SystemInformation.DragSize.Width / 2 ||
                 Math.Abs(e.Y - _dragStartPoint.Y) > SystemInformation.DragSize.Height / 2)
             {
-                var form = this.FindForm() as Form1;
-                if (form == null) return;
-
-                // Get all selected controls, or just this one if not selected
-                var selected = form.GetSelectedPlayerControls();
-                if (!selected.Contains(this))
-                    selected = new List<PlayerUserControl> { this };
-
-                this.DoDragDrop(selected, DragDropEffects.Move);
+                _dragInitiated = false;
+                var parent = this.Parent as FlowLayoutPanel;
+                if (parent != null)
+                {
+                    var selected = parent.Controls.OfType<PlayerUserControl>()
+                        .Where(c => c.IsSelected).ToList();
+                    if (!selected.Contains(this))
+                        selected = new List<PlayerUserControl> { this };
+                    parent.DoDragDrop(selected, DragDropEffects.Move);
+                }
             }
         }
     }
 
+    private void PbDragHandle_MouseUp(object? sender, MouseEventArgs e)
+    {
+        _dragInitiated = false;
+    }
 }
