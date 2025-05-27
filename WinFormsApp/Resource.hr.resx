@@ -156,6 +156,9 @@
   <data name="Image" xml:space="preserve">
     <value>Slika</value>
   </data>
+  <data name="InfoLimitReached3FavPlayers" xml:space="preserve">
+    <value>Ne možete imati više od 3 favorit igrača.</value>
+  </data>
   <data name="InfoSelFavPlayers" xml:space="preserve">
     <value>Molim odaberite barem 1 (jedan) favorit igrač.</value>
   </data>

@@ -156,6 +156,9 @@
   <data name="Image" xml:space="preserve">
     <value>Image</value>
   </data>
+  <data name="InfoLimitReached3FavPlayers" xml:space="preserve">
+    <value>Cannot have more than 3 favorite players.</value>
+  </data>
   <data name="InfoSelFavPlayers" xml:space="preserve">
     <value>Please select at least 1 (one) favorite player.</value>
   </data>

@@ -10,4 +10,18 @@
 
   <Import Project="..\Resources\Resources.projitems" Label="Shared" />
 
+  <ItemGroup>
+    <None Remove="football-pitch.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="football-pitch.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+  </ItemGroup>
+
 </Project>

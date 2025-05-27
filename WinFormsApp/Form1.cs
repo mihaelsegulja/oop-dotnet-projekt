@@ -195,6 +195,15 @@ public partial class Form1 : Form
         if (e.Data.GetDataPresent(typeof(List<PlayerUserControl>)))
         {
             var controls = (List<PlayerUserControl>)e.Data.GetData(typeof(List<PlayerUserControl>));
+            int availableSlots = 3 - flpFavPlayers.Controls.Count;
+            var toAdd = controls.Where(ctrl => flpAllPlayers.Controls.Contains(ctrl)).Take(availableSlots).ToList();
+
+            if (toAdd.Count < controls.Count)
+            {
+                MessageBox.Show(Resource.InfoLimitReached3FavPlayers, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             foreach (var ctrl in controls)
             {
                 if (flpAllPlayers.Controls.Contains(ctrl))
@@ -226,10 +235,7 @@ public partial class Form1 : Form
         }
 
         printPreviewDialog.Document = printDocument;
-        printPreviewDialog.Width = 1000;
-        printPreviewDialog.Height = 800;
         printPreviewDialog.ShowDialog();
-
     }
 
     private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
