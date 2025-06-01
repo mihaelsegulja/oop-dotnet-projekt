@@ -2,6 +2,7 @@
 using DAL.Repositories;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace WpfApp;
 
@@ -40,12 +41,40 @@ public partial class MainWindow : Window
 
     private void ButtonInfoHomeTeam_Click(object sender, RoutedEventArgs e)
     {
+        var selected = cbHomeTeam.SelectedItem as string;
+        var fifaCode = GetFifaCode(selected);
+        if (string.IsNullOrEmpty(fifaCode)) return;
 
+        var detailWindow = new TeamDetailWindow(fifaCode)
+        {
+            Owner = this,
+            Opacity = 0
+        };
+        detailWindow.ShowDialog();
     }
 
     private void ButtonInfoAwayTeam_Click(object sender, RoutedEventArgs e)
     {
+        var selected = cbAwayTeam.SelectedItem as string;
+        var fifaCode = GetFifaCode(selected);
+        if (string.IsNullOrEmpty(fifaCode)) return;
 
+        var detailWindow = new TeamDetailWindow(fifaCode)
+        {
+            Owner = this,
+            Opacity = 0
+        };
+        detailWindow.ShowDialog();
+    }
+
+    private void cbHomeTeam_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        LoadAwayTeamsForCbAsync();
+    }
+
+    private void cbAwayTeam_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        DisplayMatchResult();
     }
 
     #endregion
@@ -103,6 +132,80 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             MessageBox.Show($"Error loading teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async void LoadAwayTeamsForCbAsync()
+    {
+        cbAwayTeam.Items.Clear();
+
+        var selected = cbHomeTeam.SelectedItem as string;
+        var homeFifaCode = GetFifaCode(selected);
+        if (string.IsNullOrEmpty(homeFifaCode))
+            return;
+
+        try
+        {
+            var matches = await _repo.GetMatchesByTeam(homeFifaCode);
+
+            var opponentTeams = new HashSet<string>();
+            foreach (var match in matches)
+            {
+                if (match.HomeTeam.Code == homeFifaCode)
+                    opponentTeams.Add($"{match.AwayTeamCountry} ({match.AwayTeam.Code})");
+                else if (match.AwayTeam.Code == homeFifaCode)
+                    opponentTeams.Add($"{match.HomeTeamCountry} ({match.HomeTeam.Code})");
+            }
+
+            foreach (var team in opponentTeams.OrderBy(x => x))
+            {
+                cbAwayTeam.Items.Add(team);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading away teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async void DisplayMatchResult()
+    {
+        tbMatchResult.Text = "X : X";
+
+        var homeSelected = cbHomeTeam.SelectedItem as string;
+        var awaySelected = cbAwayTeam.SelectedItem as string;
+        var homeFifaCode = GetFifaCode(homeSelected);
+        var awayFifaCode = GetFifaCode(awaySelected);
+
+        if (string.IsNullOrEmpty(homeFifaCode) || string.IsNullOrEmpty(awayFifaCode))
+            return;
+
+        try
+        {
+            var matches = await _repo.GetMatchesByTeam(homeFifaCode);
+
+            var match = matches.FirstOrDefault(m =>
+                (m.HomeTeam.Code == homeFifaCode && m.AwayTeam.Code == awayFifaCode) ||
+                (m.HomeTeam.Code == awayFifaCode && m.AwayTeam.Code == homeFifaCode));
+
+            if (match != null)
+            {
+                int homeGoals = (int)match.HomeTeam.Goals;
+                int awayGoals = (int)match.AwayTeam.Goals;
+
+                if (match.HomeTeam.Code == homeFifaCode)
+                    tbMatchResult.Text = $"{homeGoals} : {awayGoals}";
+                else
+                    tbMatchResult.Text = $"{awayGoals} : {homeGoals}";
+            }
+            else
+            {
+                tbMatchResult.Text = "X : X";
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading match result: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
