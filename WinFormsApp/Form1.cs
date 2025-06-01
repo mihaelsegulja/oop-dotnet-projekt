@@ -20,7 +20,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        RefreshSettings();
+        LoadAppSettings();
 
         printDocument.PrintPage += PrintDocument_PrintPage;
     }
@@ -53,7 +53,7 @@ public partial class Form1 : Form
         pbMain.Visible = true;
 
         RepositoryFactory.SaveAppSettings(_appSettings);
-        RefreshSettings();
+        LoadAppSettings();
 
         Cursor = Cursors.Default;
         pbMain.Visible = false;
@@ -424,7 +424,7 @@ public partial class Form1 : Form
         }
     }
 
-    private void RefreshSettings()
+    private void LoadAppSettings()
     {
         _appSettings = RepositoryFactory.GetAppSettings();
         _repo = RepositoryFactory.GetRepository();
@@ -536,9 +536,7 @@ public partial class Form1 : Form
             var stats = await GetPlayerStatsAsync(fifaCode);
 
             foreach (var s in stats)
-            {
                 dgvPlayerStats.Rows.Add(s.PlayerImage, s.PlayerName, s.Goals, s.YellowCards);
-            }
         }
         catch (Exception ex)
         {

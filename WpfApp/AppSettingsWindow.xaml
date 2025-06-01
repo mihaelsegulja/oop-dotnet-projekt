@@ -6,8 +6,34 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="App Settings" 
-        Height="400" Width="500">
-    <Grid>
-        
-    </Grid>
+        Height="400" Width="300"
+        Loaded="AppSettingsWindow_Loaded">
+    <StackPanel Margin="10" VerticalAlignment="Center">
+        <GroupBox Header="Language and Region" Margin="0,0,0,10">
+            <StackPanel>
+                <RadioButton x:Name="rbEn" Content="English" GroupName="LangAndReg" Margin="5"/>
+                <RadioButton x:Name="rbHr" Content="Croatian" GroupName="LangAndReg" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="World Cup Gender" Margin="0,0,0,10">
+            <StackPanel>
+                <RadioButton x:Name="rbMen" Content="Men" GroupName="Gender" Margin="5"/>
+                <RadioButton x:Name="rbWomen" Content="Women" GroupName="Gender" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Window Resolution" Margin="0,0,0,10">
+            <StackPanel>
+                <RadioButton x:Name="rbRes1" Content="800 x 600" GroupName="Resolution" Margin="5"/>
+                <RadioButton x:Name="rbRes2" Content="1000 x 800" GroupName="Resolution" Margin="5"/>
+                <RadioButton x:Name="rbRes3" Content="1200 x 900" GroupName="Resolution" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save" Width="80" Margin="5" IsDefault="True" Click="Save_Click"/>
+            <Button Content="Cancel" Width="80" Margin="5" IsCancel="True" Click="Cancel_Click"/>
+        </StackPanel>
+    </StackPanel>
 </Window>
