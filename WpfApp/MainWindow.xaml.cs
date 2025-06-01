@@ -2,7 +2,6 @@
 using DAL.Repositories;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WpfApp;
 
@@ -11,6 +10,7 @@ namespace WpfApp;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private IAppSettingsRepository _appSettingsRepo;
     private AppSettings _appSettings;
     private IRepository _repo;
 
@@ -34,6 +34,7 @@ public partial class MainWindow : Window
         if(result == true)
         {
             LoadAppSettings();
+            LoadHomeTeamsForCbAsync();
         }
     }
 
@@ -64,7 +65,8 @@ public partial class MainWindow : Window
 
     private void LoadAppSettings()
     {
-        _appSettings = RepositoryFactory.GetAppSettings();
+        _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
+        _appSettings = _appSettingsRepo.LoadSettings();
         _repo = RepositoryFactory.GetRepository();
 
         Width = _appSettings.WpfWindowWidth;
@@ -75,8 +77,6 @@ public partial class MainWindow : Window
             var culture = new CultureInfo(_appSettings.LanguageAndRegion);
             Thread.CurrentThread.CurrentUICulture = culture;
             Thread.CurrentThread.CurrentCulture = culture;
-
-            // HandleLocalization();
         }
     }
 

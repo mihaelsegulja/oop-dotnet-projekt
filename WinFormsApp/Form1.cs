@@ -8,6 +8,7 @@ namespace WinFormsApp;
 
 public partial class Form1 : Form
 {
+    private IAppSettingsRepository _appSettingsRepo;
     private AppSettings _appSettings;
     private IRepository _repo;
 
@@ -19,9 +20,7 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
-
         LoadAppSettings();
-
         printDocument.PrintPage += PrintDocument_PrintPage;
     }
 
@@ -52,7 +51,7 @@ public partial class Form1 : Form
         Cursor = Cursors.WaitCursor;
         pbMain.Visible = true;
 
-        RepositoryFactory.SaveAppSettings(_appSettings);
+        _appSettingsRepo.SaveSettings(_appSettings);
         LoadAppSettings();
 
         Cursor = Cursors.Default;
@@ -112,7 +111,7 @@ public partial class Form1 : Form
             .Select(ctrl => ctrl.Player.Name)
             .ToList();
 
-        RepositoryFactory.SaveAppSettings(_appSettings);
+        _appSettingsRepo.SaveSettings(_appSettings);
 
         Cursor = Cursors.Default;
         pbMain.Visible = false;
@@ -426,17 +425,19 @@ public partial class Form1 : Form
 
     private void LoadAppSettings()
     {
-        _appSettings = RepositoryFactory.GetAppSettings();
+        _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
+        _appSettings = _appSettingsRepo.LoadSettings();
         _repo = RepositoryFactory.GetRepository();
 
-        if(Thread.CurrentThread.CurrentUICulture.Name == _appSettings.LanguageAndRegion) 
-            return;
+        if(Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
+        {
+            var culture = new CultureInfo(_appSettings.LanguageAndRegion);
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
 
-        var culture = new CultureInfo(_appSettings.LanguageAndRegion);
-        Thread.CurrentThread.CurrentUICulture = culture;
-        Thread.CurrentThread.CurrentCulture = culture;
+            HandleLocalization();
+        }
 
-        HandleLocalization();
     }
 
     public void ClearAllPlayerSelections()

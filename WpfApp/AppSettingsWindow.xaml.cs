@@ -11,13 +11,14 @@ namespace WpfApp;
 /// </summary>
 public partial class AppSettingsWindow : Window
 {
-    private AppSettings _appSettings;
-    
+    private IAppSettingsRepository _appSettingsRepo;
+    private AppSettings _appSettings;    
 
     public AppSettingsWindow()
     {
         InitializeComponent();
-        _appSettings = RepositoryFactory.GetAppSettings();
+        _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
+        _appSettings = _appSettingsRepo.LoadSettings();
     }
 
     private void AppSettingsWindow_Loaded(object sender, RoutedEventArgs e)
@@ -60,7 +61,7 @@ public partial class AppSettingsWindow : Window
             _appSettings.WpfWindowHeight = Resolutions.Res1200x900.Height;
         }
 
-        RepositoryFactory.SaveAppSettings(_appSettings);
+        _appSettingsRepo.SaveSettings(_appSettings);
 
         DialogResult = true;
         Close();

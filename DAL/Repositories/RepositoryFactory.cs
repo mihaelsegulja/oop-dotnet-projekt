@@ -1,5 +1,4 @@
-﻿using DAL.Config;
-using DAL.Enums;
+﻿using DAL.Enums;
 
 namespace DAL.Repositories;
 
@@ -10,18 +9,14 @@ public static class RepositoryFactory
 {
     private static readonly AppSettingsRepository _appSettingsRepository = new();
 
-    public static AppSettings GetAppSettings()
-    {
-        return _appSettingsRepository.LoadSettings();
-    }
-
-    public static void SaveAppSettings(AppSettings appSettings)
-    {
-        _appSettingsRepository.SaveSettings(appSettings);
-    }
+    /// <summary>
+    /// Gets the settings repository.
+    /// </summary>
+    /// <returns>A settings repository</returns>
+    public static IAppSettingsRepository GetAppSettingsRepository() => _appSettingsRepository;
 
     /// <summary>
-    /// Gets a repository.
+    /// Gets a data repository.
     /// </summary>
     /// <param name="gender">World Cup gender to get data for</param>
     /// <param name="type">Repository type to use (defaults to AutoDetect)</param>
