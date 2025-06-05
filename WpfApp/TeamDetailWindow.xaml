@@ -6,8 +6,17 @@
         WindowStartupLocation="CenterOwner"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="Transparent"
-        Loaded="Window_Loaded">
+        Background="Transparent">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                 From="0" To="1" Duration="0:0:0.5"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Border CornerRadius="15" Background="White" Padding="20,20,20,0">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="10" BlurRadius="10" Opacity="0.5"/>
@@ -23,7 +32,7 @@
             <TextBlock x:Name="tbGoalsAgainst" Margin="0,0,0,5"/>
             <TextBlock x:Name="tbGoalDiff" Margin="0,0,0,5"/>
             <Button Content="Close" HorizontalAlignment="Center" 
-                    Margin="0,20,0,0" Width="250" Background="Red" FontSize="15" 
+                    Margin="0,20,0,0" Width="300" Background="Red" FontSize="15" 
                     FontWeight="Bold" Foreground="White" Height="40" Click="Close_Click"/>
         </StackPanel>
     </Border>

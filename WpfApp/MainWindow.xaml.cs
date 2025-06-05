@@ -130,6 +130,8 @@ public partial class MainWindow : Window
 
     private async void LoadHomeTeamsForCbAsync()
     {
+        cbHomeTeam.Items.Clear();
+
         try
         {
             var teams = await _repo.GetTeams();
@@ -263,7 +265,7 @@ public partial class MainWindow : Window
 
             foreach (var player in group)
             {
-                var control = new PlayerUserControl(Regex.Split(player.Name, @" +")[1], (int)player.ShirtNumber);
+                var control = new PlayerUserControl(Regex.Match(player.Name, @"[^ ]* (.*)").Groups[1].Value, (int)player.ShirtNumber);
                 stack.Children.Add(control);
             }
 

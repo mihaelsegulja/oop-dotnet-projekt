@@ -67,12 +67,6 @@ public partial class TeamDetailWindow : Window
         }
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-        var anim = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.5));
-        BeginAnimation(OpacityProperty, anim);
-    }
-
     private void Close_Click(object sender, RoutedEventArgs e)
     {
         Close();

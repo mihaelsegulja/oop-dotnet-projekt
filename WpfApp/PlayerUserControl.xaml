@@ -6,6 +6,16 @@
              xmlns:local="clr-namespace:WpfApp"
              mc:Ignorable="d" 
              Width="70" Height="80" Margin="0,8,0,8">
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="UserControl.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
     <Border Background="White" BorderBrush="Black" BorderThickness="1">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Width="60" Height="60">
