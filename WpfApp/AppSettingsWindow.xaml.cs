@@ -29,6 +29,8 @@ public partial class AppSettingsWindow : Window
         rbMen.IsChecked = _appSettings.WorldCupGender == WorldCupGender.Men;
         rbWomen.IsChecked = _appSettings.WorldCupGender == WorldCupGender.Women;
 
+        cbFullScreen.IsChecked = _appSettings.WpfIsFullscreen;
+
         if (_appSettings.WpfWindowWidth == Resolutions.Res800x600.Width && 
             _appSettings.WpfWindowHeight == Resolutions.Res800x600.Height)
             rbRes1.IsChecked = true;
@@ -44,6 +46,8 @@ public partial class AppSettingsWindow : Window
     {
         _appSettings.LanguageAndRegion = rbEn.IsChecked == true ? "en-US" : "hr-HR";
         _appSettings.WorldCupGender = rbMen.IsChecked == true ? WorldCupGender.Men : WorldCupGender.Women;
+
+        _appSettings.WpfIsFullscreen = cbFullScreen.IsChecked == true;
 
         if (rbRes1.IsChecked == true)
         {
@@ -70,5 +74,19 @@ public partial class AppSettingsWindow : Window
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void cbFullScreen_Checked(object sender, RoutedEventArgs e)
+    {
+        rbRes1.IsEnabled = false;
+        rbRes2.IsEnabled = false;
+        rbRes3.IsEnabled = false;
+    }
+
+    private void cbFullScreen_Unchecked(object sender, RoutedEventArgs e)
+    {
+        rbRes1.IsEnabled = true;
+        rbRes2.IsEnabled = true;
+        rbRes3.IsEnabled = true;
     }
 }

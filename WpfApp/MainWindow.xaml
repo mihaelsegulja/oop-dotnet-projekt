@@ -27,13 +27,21 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
                 <Button Content="Info" Margin="10,0" Padding="10,0" Click="ButtonInfoHomeTeam_Click"/>
-                <TextBlock x:Name="tbMatchResult" Text="X : X" FontSize="16" FontWeight="Bold" Margin="10,0"/>
+                <TextBlock x:Name="tbMatchResult" Text="X : X" FontSize="15" FontWeight="Bold" Margin="10,0"/>
                 <Button Content="Info" Margin="10,0" Padding="10,0" Click="ButtonInfoAwayTeam_Click"/>
             </StackPanel>
         </StackPanel>
 
         <Grid Grid.Row="2" Background="Transparent">
             <Image Source="football-pitch.jpg" Stretch="Fill"/>
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="HomeTeamGrid" Background="Transparent" IsHitTestVisible="False" Grid.Column="0"/>
+                <Grid x:Name="AwayTeamGrid" Background="Transparent" IsHitTestVisible="False" Grid.Column="1"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

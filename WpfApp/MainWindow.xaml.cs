@@ -1,6 +1,9 @@
 ﻿using DAL.Config;
+using DAL.Enums;
+using DAL.Models;
 using DAL.Repositories;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -98,7 +101,9 @@ public partial class MainWindow : Window
         _appSettings = _appSettingsRepo.LoadSettings();
         _repo = RepositoryFactory.GetRepository();
 
-        Width = _appSettings.WpfWindowWidth;
+        WindowState = _appSettings.WpfIsFullscreen ? WindowState.Maximized : WindowState.Normal;
+
+        Width =  _appSettings.WpfWindowWidth;
         Height = _appSettings.WpfWindowHeight;
 
         if (Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
@@ -193,10 +198,21 @@ public partial class MainWindow : Window
                 int homeGoals = (int)match.HomeTeam.Goals;
                 int awayGoals = (int)match.AwayTeam.Goals;
 
+                var normalOrder = new[] { Position.Goalie, Position.Defender, Position.Midfield, Position.Forward };
+                var reverseOrder = normalOrder.Reverse().ToArray();
+
                 if (match.HomeTeam.Code == homeFifaCode)
+                {
                     tbMatchResult.Text = $"{homeGoals} : {awayGoals}";
+                    DisplayPlayersOnPitch(HomeTeamGrid, match.HomeTeamStatistics.StartingEleven, normalOrder);
+                    DisplayPlayersOnPitch(AwayTeamGrid, match.AwayTeamStatistics.StartingEleven, reverseOrder);
+                }
                 else
+                {
                     tbMatchResult.Text = $"{awayGoals} : {homeGoals}";
+                    DisplayPlayersOnPitch(AwayTeamGrid, match.HomeTeamStatistics.StartingEleven, reverseOrder);
+                    DisplayPlayersOnPitch(HomeTeamGrid, match.AwayTeamStatistics.StartingEleven, normalOrder);
+                }
             }
             else
             {
@@ -206,6 +222,40 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             MessageBox.Show($"Error loading match result: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void DisplayPlayersOnPitch(Grid grid, List<StartingEleven> players, Position[] positions)
+    {
+        grid.Children.Clear();
+        grid.RowDefinitions.Clear();
+        grid.ColumnDefinitions.Clear();
+
+        for (int i = 0; i < positions.Length; i++)
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+
+        grid.RowDefinitions.Add(new RowDefinition());
+
+        for (int col = 0; col < positions.Length; col++)
+        {
+            var group = players.Where(p => p.Position == positions[col]).ToList();
+
+            var stack = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            foreach (var player in group)
+            {
+                var control = new PlayerUserControl(Regex.Split(player.Name, @" +")[1], (int)player.ShirtNumber);
+                stack.Children.Add(control);
+            }
+
+            Grid.SetColumn(stack, col);
+            Grid.SetRow(stack, 0);
+            grid.Children.Add(stack);
         }
     }
 

@@ -30,7 +30,6 @@ public partial class TeamDetailWindow : Window
             {
                 MessageBox.Show($"Team with FIFA code '{fifaCode}' not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
-                return;
             }
 
             var matches = await _repo.GetMatchesByTeam(fifaCode);
@@ -52,7 +51,7 @@ public partial class TeamDetailWindow : Window
                 else draws++;
             }
 
-            tbTeamName.Text = $"Name: {team.Country}";
+            tbTeamName.Text = $"Country: {team.Country}";
             tbFifaCode.Text = $"FIFA Code: {team.FifaCode}";
             tbPlayed.Text = $"Played: {played}";
             tbWins.Text = $"Wins: {wins}";

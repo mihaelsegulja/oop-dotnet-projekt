@@ -24,4 +24,7 @@ public class AppSettings
 
     [JsonProperty("wpf_window_height")]
     public double WpfWindowHeight { get; set; } = 600;
+
+    [JsonProperty("wpf_is_fullscreen")]
+    public bool WpfIsFullscreen { get; set; } = false;
 }

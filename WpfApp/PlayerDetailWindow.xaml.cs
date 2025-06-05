@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfApp
+namespace WpfApp;
+
+/// <summary>
+/// Interaction logic for PlayerDetailWindow.xaml
+/// </summary>
+public partial class PlayerDetailWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for PlayerDetailWindow.xaml
-    /// </summary>
-    public partial class PlayerDetailWindow : Window
+    public PlayerDetailWindow()
     {
-        public PlayerDetailWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -5,10 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="60">
+             Width="70" Height="80" Margin="0,8,0,8">
     <Border Background="White" BorderBrush="Black" BorderThickness="1">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock x:Name="tbNumber" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
+            <Grid Width="60" Height="60">
+                <Image x:Name="imgPlayer" Stretch="Fill" Source="/default-player.png"/>
+                <TextBlock x:Name="tbNumber"
+                FontWeight="Bold"
+                FontSize="20"
+                Foreground="Black"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                TextAlignment="Center"
+                Background="#80FFFFFF"
+                Padding="2,0"/>
+            </Grid>
             <TextBlock x:Name="tbName" FontSize="10" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         </StackPanel>
     </Border>

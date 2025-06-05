@@ -25,6 +25,7 @@
 
         <GroupBox Header="Window Resolution" Margin="0,0,0,10">
             <StackPanel>
+                <CheckBox x:Name="cbFullScreen" Content="Full Screen" Margin="5" Checked="cbFullScreen_Checked" Unchecked="cbFullScreen_Unchecked"/>
                 <RadioButton x:Name="rbRes1" Content="800 x 600" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes2" Content="1000 x 800" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes3" Content="1200 x 900" GroupName="Resolution" Margin="5"/>
