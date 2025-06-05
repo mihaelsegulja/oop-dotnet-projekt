@@ -2,7 +2,7 @@
 using DAL.Enums;
 using DAL.Repositories;
 using System.Windows;
-using System.Windows.Shapes;
+using WpfApp.Models;
 
 namespace WpfApp;
 

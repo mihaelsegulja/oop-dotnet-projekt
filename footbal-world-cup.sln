@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csp
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Resources", "Resources\Resources.shproj", "{CEC5260B-378B-4D99-9356-3E06CE6253E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "Localization\Localization.csproj", "{D9913E6D-9A44-4352-A941-3024D05F6BD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{B109C37F-1342-4459-A570-94C24E494000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B109C37F-1342-4459-A570-94C24E494000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B109C37F-1342-4459-A570-94C24E494000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9913E6D-9A44-4352-A941-3024D05F6BD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9913E6D-9A44-4352-A941-3024D05F6BD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9913E6D-9A44-4352-A941-3024D05F6BD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9913E6D-9A44-4352-A941-3024D05F6BD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

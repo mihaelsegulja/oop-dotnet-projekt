@@ -1,5 +1,4 @@
-﻿using DAL.Models;
-using DAL.Repositories;
+﻿using DAL.Repositories;
 using System.Windows;
 using System.Windows.Media.Animation;
 

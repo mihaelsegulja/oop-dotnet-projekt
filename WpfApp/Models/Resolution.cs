@@ -1,4 +1,4 @@
-﻿namespace WpfApp;
+﻿namespace WpfApp.Models;
 
 public readonly struct Resolution
 {

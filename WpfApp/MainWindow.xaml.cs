@@ -20,6 +20,7 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        LoadLocalization();
         InitializeComponent();
         LoadAppSettings();
     }
@@ -105,6 +106,19 @@ public partial class MainWindow : Window
 
         Width =  _appSettings.WpfWindowWidth;
         Height = _appSettings.WpfWindowHeight;
+
+        if (Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
+        {
+            var culture = new CultureInfo(_appSettings.LanguageAndRegion);
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+        }
+    }
+
+    private void LoadLocalization()
+    {
+        _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
+        _appSettings = _appSettingsRepo.LoadSettings();
 
         if (Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
         {

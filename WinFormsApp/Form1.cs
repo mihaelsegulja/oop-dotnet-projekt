@@ -1,8 +1,10 @@
 using DAL.Config;
 using DAL.Enums;
 using DAL.Repositories;
+using Localization;
 using System.Drawing.Printing;
 using System.Globalization;
+using WinFormsApp.Models;
 
 namespace WinFormsApp;
 
@@ -22,23 +24,6 @@ public partial class Form1 : Form
         InitializeComponent();
         LoadAppSettings();
         printDocument.PrintPage += PrintDocument_PrintPage;
-    }
-
-    public class PlayerStats
-    {
-        public Image PlayerImage { get; set; }
-        public string PlayerName { get; set; }
-        public int Goals { get; set; }
-        public int YellowCards { get; set; }
-    }
-
-    public class MatchAttendanceInfo
-    {
-        public DateTimeOffset DateTime { get; set; }
-        public string HomeTeam { get; set; }
-        public string AwayTeam { get; set; }
-        public string Venue { get; set; }
-        public long Attendance { get; set; }
     }
 
     #region EVENTS
