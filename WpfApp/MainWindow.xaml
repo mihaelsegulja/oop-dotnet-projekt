@@ -34,14 +34,14 @@
         </StackPanel>
 
         <Grid Grid.Row="2" Background="Transparent">
-            <Image Source="football-pitch.jpg" Stretch="Fill"/>
+            <Image Source="Images/football-pitch.jpg" Stretch="Fill"/>
             <Grid Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Grid x:Name="HomeTeamGrid" Background="Transparent" IsHitTestVisible="False" Grid.Column="0"/>
-                <Grid x:Name="AwayTeamGrid" Background="Transparent" IsHitTestVisible="False" Grid.Column="1"/>
+                <Grid x:Name="HomeTeamGrid" Background="Transparent" Grid.Column="0"/>
+                <Grid x:Name="AwayTeamGrid" Background="Transparent" Grid.Column="1"/>
             </Grid>
         </Grid>
     </Grid>

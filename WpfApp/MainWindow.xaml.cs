@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WpfApp;
 
@@ -81,6 +82,14 @@ public partial class MainWindow : Window
         DisplayMatchResult();
     }
 
+    private MouseButtonEventHandler OpenPlayerInfo(StartingEleven player)
+    {
+        return (sender, e) =>
+        {
+            new PlayerDetailWindow(player).Show();
+        };
+    }
+
     #endregion
 
     #region HELPERS
@@ -104,7 +113,7 @@ public partial class MainWindow : Window
 
         WindowState = _appSettings.WpfIsFullscreen ? WindowState.Maximized : WindowState.Normal;
 
-        Width =  _appSettings.WpfWindowWidth;
+        Width = _appSettings.WpfWindowWidth;
         Height = _appSettings.WpfWindowHeight;
 
         if (Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
@@ -265,7 +274,10 @@ public partial class MainWindow : Window
 
             foreach (var player in group)
             {
-                var control = new PlayerUserControl(Regex.Match(player.Name, @"[^ ]* (.*)").Groups[1].Value, (int)player.ShirtNumber);
+                var match = Regex.Match(player.Name, @"([A-Z][A-Z\- ]+)$");
+                string displayName = match.Success ? match.Groups[1].Value : player.Name;
+                var control = new PlayerUserControl(displayName, (int)player.ShirtNumber);
+                control.MouseDown += OpenPlayerInfo(player);
                 stack.Children.Add(control);
             }
 

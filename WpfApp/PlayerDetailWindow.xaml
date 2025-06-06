@@ -6,8 +6,15 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="Player Details" 
-        Height="400" Width="400">
+        Height="350" Width="300"
+        Loaded="Window_Loaded">
     <Grid>
-        
+        <StackPanel Margin="20">
+            <Image x:Name="imgPlayer" Width="100" Height="100" Stretch="Fill" Source="Images/default-player.png" Margin="0,0,0,10"/>
+            <TextBlock x:Name="tbPlayerName" FontSize="18" FontWeight="Bold" Margin="0,5,0,10"/>
+            <TextBlock x:Name="tbShirtNum" FontSize="15" Margin="0,0,0,10"/>
+            <TextBlock x:Name="tbPosition" Margin="0,0,0,5"/>
+            <TextBlock x:Name="tbIsCaptain" Margin="0,0,0,5"/>
+        </StackPanel>
     </Grid>
 </Window>
