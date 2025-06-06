@@ -100,7 +100,7 @@ public partial class MainWindow : Window
     {
         _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
         _appSettings = _appSettingsRepo.LoadSettings();
-        _repo = RepositoryFactory.GetRepository();
+        _repo = RepositoryFactory.GetRepository(_appSettings.RepositoryType);
 
         WindowState = _appSettings.WpfIsFullscreen ? WindowState.Maximized : WindowState.Normal;
 

@@ -33,6 +33,13 @@ public partial class Form1 : Form
         _appSettings.LanguageAndRegion = rbEn.Checked ? "en-US" : "hr-HR";
         _appSettings.WorldCupGender = rbMen.Checked ? WorldCupGender.Men : WorldCupGender.Women;
 
+        if (rbAutodetect.Checked)
+            _appSettings.RepositoryType = RepositoryType.AutoDetect;
+        else if (rbLocalFiles.Checked)
+            _appSettings.RepositoryType = RepositoryType.FileSystem;
+        else if (rbWebApi.Checked)
+            _appSettings.RepositoryType = RepositoryType.WebApi;
+
         Cursor = Cursors.WaitCursor;
         pbMain.Visible = true;
 
@@ -50,6 +57,10 @@ public partial class Form1 : Form
 
         rbMen.Checked = _appSettings.WorldCupGender == WorldCupGender.Men;
         rbWomen.Checked = _appSettings.WorldCupGender == WorldCupGender.Women;
+
+        rbAutodetect.Checked = _appSettings.RepositoryType == RepositoryType.AutoDetect;
+        rbLocalFiles.Checked = _appSettings.RepositoryType == RepositoryType.FileSystem;
+        rbWebApi.Checked = _appSettings.RepositoryType == RepositoryType.WebApi;
     }
 
     private void tcMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -412,7 +423,7 @@ public partial class Form1 : Form
     {
         _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
         _appSettings = _appSettingsRepo.LoadSettings();
-        _repo = RepositoryFactory.GetRepository();
+        _repo = RepositoryFactory.GetRepository(_appSettings.RepositoryType);
 
         if(Thread.CurrentThread.CurrentUICulture.Name != _appSettings.LanguageAndRegion)
         {

@@ -1,4 +1,5 @@
-﻿using DAL.Repositories;
+﻿using DAL.Config;
+using DAL.Repositories;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -9,6 +10,8 @@ namespace WpfApp;
 /// </summary>
 public partial class TeamDetailWindow : Window
 {
+    private IAppSettingsRepository _appSettingsRepo;
+    private AppSettings _appSettings;
     private IRepository _repo;
 
     public TeamDetailWindow(string fifaCode)
@@ -21,7 +24,9 @@ public partial class TeamDetailWindow : Window
     {
         try
         {
-            _repo = RepositoryFactory.GetRepository();
+            _appSettingsRepo = RepositoryFactory.GetAppSettingsRepository();
+            _appSettings = _appSettingsRepo.LoadSettings();
+            _repo = RepositoryFactory.GetRepository(_appSettings.RepositoryType);
 
             var teams = await _repo.GetTeams();
             var team = teams.FirstOrDefault(t => t.FifaCode.Equals(fifaCode, StringComparison.OrdinalIgnoreCase));

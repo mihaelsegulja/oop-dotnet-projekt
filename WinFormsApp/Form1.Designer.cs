@@ -28,14 +28,17 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-        DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
         tcMain = new TabControl();
         tpSettings = new TabPage();
+        gbRepoType = new GroupBox();
+        rbLocalFiles = new RadioButton();
+        rbWebApi = new RadioButton();
         gbLangAndReg = new GroupBox();
         rbHr = new RadioButton();
         rbEn = new RadioButton();
@@ -67,8 +70,10 @@ partial class Form1
         miPrint = new ToolStripMenuItem();
         miControls = new ToolStripMenuItem();
         pbMain = new ProgressBar();
+        rbAutodetect = new RadioButton();
         tcMain.SuspendLayout();
         tpSettings.SuspendLayout();
+        gbRepoType.SuspendLayout();
         gbLangAndReg.SuspendLayout();
         gbWCGender.SuspendLayout();
         tpFavs.SuspendLayout();
@@ -96,6 +101,7 @@ partial class Form1
         // tpSettings
         // 
         tpSettings.BackColor = Color.WhiteSmoke;
+        tpSettings.Controls.Add(gbRepoType);
         tpSettings.Controls.Add(gbLangAndReg);
         tpSettings.Controls.Add(gbWCGender);
         tpSettings.Controls.Add(btnSaveSettings);
@@ -106,11 +112,45 @@ partial class Form1
         tpSettings.TabIndex = 0;
         tpSettings.Text = "Settings";
         // 
+        // gbRepoType
+        // 
+        gbRepoType.Controls.Add(rbAutodetect);
+        gbRepoType.Controls.Add(rbLocalFiles);
+        gbRepoType.Controls.Add(rbWebApi);
+        gbRepoType.Location = new Point(655, 126);
+        gbRepoType.Name = "gbRepoType";
+        gbRepoType.Size = new Size(242, 144);
+        gbRepoType.TabIndex = 5;
+        gbRepoType.TabStop = false;
+        gbRepoType.Text = "Repo type";
+        // 
+        // rbLocalFiles
+        // 
+        rbLocalFiles.AutoSize = true;
+        rbLocalFiles.Location = new Point(6, 70);
+        rbLocalFiles.Name = "rbLocalFiles";
+        rbLocalFiles.Size = new Size(102, 24);
+        rbLocalFiles.TabIndex = 3;
+        rbLocalFiles.TabStop = true;
+        rbLocalFiles.Text = "Local Files";
+        rbLocalFiles.UseVisualStyleBackColor = true;
+        // 
+        // rbWebApi
+        // 
+        rbWebApi.AutoSize = true;
+        rbWebApi.Location = new Point(6, 40);
+        rbWebApi.Name = "rbWebApi";
+        rbWebApi.Size = new Size(93, 24);
+        rbWebApi.TabIndex = 2;
+        rbWebApi.TabStop = true;
+        rbWebApi.Text = "Web API";
+        rbWebApi.UseVisualStyleBackColor = true;
+        // 
         // gbLangAndReg
         // 
         gbLangAndReg.Controls.Add(rbHr);
         gbLangAndReg.Controls.Add(rbEn);
-        gbLangAndReg.Location = new Point(203, 126);
+        gbLangAndReg.Location = new Point(118, 126);
         gbLangAndReg.Name = "gbLangAndReg";
         gbLangAndReg.Size = new Size(243, 113);
         gbLangAndReg.TabIndex = 3;
@@ -143,7 +183,7 @@ partial class Form1
         // 
         gbWCGender.Controls.Add(rbWomen);
         gbWCGender.Controls.Add(rbMen);
-        gbWCGender.Location = new Point(522, 126);
+        gbWCGender.Location = new Point(386, 126);
         gbWCGender.Name = "gbWCGender";
         gbWCGender.Size = new Size(242, 113);
         gbWCGender.TabIndex = 4;
@@ -272,26 +312,26 @@ partial class Form1
         // 
         // dgvPlayerStats
         // 
-        dataGridViewCellStyle7.BackColor = Color.WhiteSmoke;
-        dgvPlayerStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-        dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        dataGridViewCellStyle8.BackColor = SystemColors.Control;
-        dataGridViewCellStyle8.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
-        dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
-        dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-        dgvPlayerStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+        dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+        dgvPlayerStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle2.BackColor = SystemColors.Control;
+        dataGridViewCellStyle2.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        dgvPlayerStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dgvPlayerStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvPlayerStats.Columns.AddRange(new DataGridViewColumn[] { PlayerImage, PlayerName, Goals, YellowCards });
-        dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        dataGridViewCellStyle9.BackColor = SystemColors.Window;
-        dataGridViewCellStyle9.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
-        dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
-        dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
-        dgvPlayerStats.DefaultCellStyle = dataGridViewCellStyle9;
+        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle3.BackColor = SystemColors.Window;
+        dataGridViewCellStyle3.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+        dgvPlayerStats.DefaultCellStyle = dataGridViewCellStyle3;
         dgvPlayerStats.Location = new Point(0, 0);
         dgvPlayerStats.Name = "dgvPlayerStats";
         dgvPlayerStats.RowHeadersWidth = 51;
@@ -340,26 +380,26 @@ partial class Form1
         // 
         // dgvMatchStats
         // 
-        dataGridViewCellStyle10.BackColor = Color.WhiteSmoke;
-        dgvMatchStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
-        dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        dataGridViewCellStyle11.BackColor = SystemColors.Control;
-        dataGridViewCellStyle11.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
-        dataGridViewCellStyle11.ForeColor = SystemColors.WindowText;
-        dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
-        dgvMatchStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+        dataGridViewCellStyle4.BackColor = Color.WhiteSmoke;
+        dgvMatchStats.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+        dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle5.BackColor = SystemColors.Control;
+        dataGridViewCellStyle5.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+        dgvMatchStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
         dgvMatchStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvMatchStats.Columns.AddRange(new DataGridViewColumn[] { Date, HomeTeam, AwayTeam, Venue, Attendance });
-        dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        dataGridViewCellStyle12.BackColor = SystemColors.Window;
-        dataGridViewCellStyle12.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
-        dataGridViewCellStyle12.ForeColor = SystemColors.ControlText;
-        dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
-        dgvMatchStats.DefaultCellStyle = dataGridViewCellStyle12;
+        dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle6.BackColor = SystemColors.Window;
+        dataGridViewCellStyle6.Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+        dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+        dgvMatchStats.DefaultCellStyle = dataGridViewCellStyle6;
         dgvMatchStats.Location = new Point(0, 0);
         dgvMatchStats.Name = "dgvMatchStats";
         dgvMatchStats.RowHeadersWidth = 51;
@@ -434,6 +474,17 @@ partial class Form1
         pbMain.TabIndex = 5;
         pbMain.Visible = false;
         // 
+        // rbAutodetect
+        // 
+        rbAutodetect.AutoSize = true;
+        rbAutodetect.Location = new Point(6, 100);
+        rbAutodetect.Name = "rbAutodetect";
+        rbAutodetect.Size = new Size(111, 24);
+        rbAutodetect.TabIndex = 4;
+        rbAutodetect.TabStop = true;
+        rbAutodetect.Text = "Autodetect";
+        rbAutodetect.UseVisualStyleBackColor = true;
+        // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(9F, 20F);
@@ -452,6 +503,8 @@ partial class Form1
         KeyDown += Form1_KeyDown;
         tcMain.ResumeLayout(false);
         tpSettings.ResumeLayout(false);
+        gbRepoType.ResumeLayout(false);
+        gbRepoType.PerformLayout();
         gbLangAndReg.ResumeLayout(false);
         gbLangAndReg.PerformLayout();
         gbWCGender.ResumeLayout(false);
@@ -503,4 +556,8 @@ partial class Form1
     private DataGridViewTextBoxColumn Venue;
     private DataGridViewTextBoxColumn Attendance;
     private ProgressBar pbMain;
+    private GroupBox gbRepoType;
+    private RadioButton rbLocalFiles;
+    private RadioButton rbWebApi;
+    private RadioButton rbAutodetect;
 }

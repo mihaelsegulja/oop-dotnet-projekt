@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="App Settings" 
-        Height="400" Width="300"
+        Height="500" Width="300"
         Loaded="AppSettingsWindow_Loaded">
     <StackPanel Margin="10" VerticalAlignment="Center">
         <GroupBox Header="Language and Region" Margin="0,0,0,10">
@@ -29,6 +29,14 @@
                 <RadioButton x:Name="rbRes1" Content="800 x 600" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes2" Content="1000 x 800" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes3" Content="1200 x 900" GroupName="Resolution" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Repo Type" Margin="0,0,0,10">
+            <StackPanel>
+                <RadioButton x:Name="rbWebApi" Content="Web API" Margin="5"/>
+                <RadioButton x:Name="rbLocalFiles" Content="Local Files" Margin="5"/>
+                <RadioButton x:Name="rbAutodetect" Content="Autodetect" Margin="5"/>
             </StackPanel>
         </GroupBox>
 

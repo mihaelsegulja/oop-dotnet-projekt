@@ -27,4 +27,8 @@ public class AppSettings
 
     [JsonProperty("wpf_is_fullscreen")]
     public bool WpfIsFullscreen { get; set; } = false;
+
+    [JsonProperty("repo_type")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public RepositoryType RepositoryType { get; set; } = RepositoryType.AutoDetect;
 }

@@ -40,6 +40,10 @@ public partial class AppSettingsWindow : Window
         else if (_appSettings.WpfWindowWidth == Resolutions.Res1200x900.Width && 
             _appSettings.WpfWindowHeight == Resolutions.Res1200x900.Height)
             rbRes3.IsChecked = true;
+
+        rbAutodetect.IsChecked = _appSettings.RepositoryType == RepositoryType.AutoDetect;
+        rbLocalFiles.IsChecked = _appSettings.RepositoryType == RepositoryType.FileSystem;
+        rbWebApi.IsChecked = _appSettings.RepositoryType == RepositoryType.WebApi;
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
@@ -64,6 +68,13 @@ public partial class AppSettingsWindow : Window
             _appSettings.WpfWindowWidth = Resolutions.Res1200x900.Width;
             _appSettings.WpfWindowHeight = Resolutions.Res1200x900.Height;
         }
+
+        if (rbAutodetect.IsChecked == true)
+            _appSettings.RepositoryType = RepositoryType.AutoDetect;
+        else if (rbLocalFiles.IsChecked == true)
+            _appSettings.RepositoryType = RepositoryType.FileSystem;
+        else if (rbWebApi.IsChecked == true)
+            _appSettings.RepositoryType = RepositoryType.WebApi;
 
         _appSettingsRepo.SaveSettings(_appSettings);
 
