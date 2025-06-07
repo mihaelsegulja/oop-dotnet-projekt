@@ -476,9 +476,8 @@ public partial class Form1 : Form
 
                 if (!playerStatsDict.TryGetValue(ev.Player, out var stats))
                 {
-                    Image? img = null;
                     string imgPath = $"Images/{ev.Player.ToLower().Replace(' ', '-')}.jpg";
-                    img = File.Exists(imgPath) ? Image.FromFile(imgPath) : Image.FromFile("Images/default-player.png");
+                    var img = File.Exists(imgPath) ? Image.FromFile(imgPath) : Image.FromFile("Images/default-player.png");
 
                     stats = new PlayerStats
                     {

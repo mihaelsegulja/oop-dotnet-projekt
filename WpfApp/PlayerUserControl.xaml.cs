@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Controls;
 
 namespace WpfApp;
 

@@ -1,8 +1,8 @@
 ﻿using DAL.Models;
 using System.IO;
-using System.Numerics;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using WpfApp.Models;
 
 namespace WpfApp;
 
@@ -11,24 +11,26 @@ namespace WpfApp;
 /// </summary>
 public partial class PlayerDetailWindow : Window
 {
-    private StartingEleven _player;
+    private PlayerStats _playerStats;
 
-    public PlayerDetailWindow(StartingEleven player)
+    public PlayerDetailWindow(PlayerStats playerStats)
     {
         InitializeComponent();
-        _player = player;
+        _playerStats = playerStats;
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        tbPlayerName.Text = $"{_player.Name}";
-        tbShirtNum.Text = $"Shirt Number: {_player.ShirtNumber}";
-        tbPosition.Text = $"Position: {_player.Position}";
-        tbIsCaptain.Text = $"Captain: {(_player.Captain ? "Yes" : "No")}";
-
-        string playerImgPath = $"Images/{_player.Name.ToLower().Replace(' ', '-')}.jpg";
-        var imagePath = Path.Exists(playerImgPath) ? playerImgPath : "Images/default-player.png";
+        string playerImgPath = $"Images/{_playerStats.Player.Name.ToLower().Replace(' ', '-')}.jpg";
+        var imagePath = File.Exists(playerImgPath) ? playerImgPath : "Images/default-player.png";
         var uri = new Uri(imagePath, UriKind.Relative);
         imgPlayer.Source = new BitmapImage(uri);
+
+        tbPlayerName.Text = $"{_playerStats.Player.Name}";
+        tbShirtNum.Text = $"Shirt Number: {_playerStats.Player.ShirtNumber}";
+        tbPosition.Text = $"Position: {_playerStats.Player.Position}";
+        tbIsCaptain.Text = $"Captain: {(_playerStats.Player.Captain ? "Yes" : "No")}";
+        tbGoals.Text = $"Goals: {_playerStats.Goals}";
+        tbYellowCards.Text = $"Yellow Cards: {_playerStats.YellowCards}";
     }
 }

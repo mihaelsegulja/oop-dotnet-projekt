@@ -1,7 +1,6 @@
 ﻿using DAL.Config;
 using DAL.Repositories;
 using System.Windows;
-using System.Windows.Media.Animation;
 
 namespace WpfApp;
 

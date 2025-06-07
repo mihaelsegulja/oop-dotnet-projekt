@@ -15,6 +15,8 @@
             <TextBlock x:Name="tbShirtNum" FontSize="15" Margin="0,0,0,10"/>
             <TextBlock x:Name="tbPosition" Margin="0,0,0,5"/>
             <TextBlock x:Name="tbIsCaptain" Margin="0,0,0,5"/>
+            <TextBlock x:Name="tbGoals" Margin="0,0,0,5"/>
+            <TextBlock x:Name="tbYellowCards" Margin="0,0,0,5"/>
         </StackPanel>
     </Grid>
 </Window>

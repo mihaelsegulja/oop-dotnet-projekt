@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfApp.Models;
 
 namespace WpfApp;
 
@@ -82,11 +83,11 @@ public partial class MainWindow : Window
         DisplayMatchResult();
     }
 
-    private MouseButtonEventHandler OpenPlayerInfo(StartingEleven player)
+    private MouseButtonEventHandler OpenPlayerInfo(PlayerStats playerStats)
     {
         return (sender, e) =>
         {
-            new PlayerDetailWindow(player).Show();
+            new PlayerDetailWindow(playerStats).Show();
         };
     }
 
@@ -229,14 +230,14 @@ public partial class MainWindow : Window
                 if (match.HomeTeam.Code == homeFifaCode)
                 {
                     tbMatchResult.Text = $"{homeGoals} : {awayGoals}";
-                    DisplayPlayersOnPitch(HomeTeamGrid, match.HomeTeamStatistics.StartingEleven, normalOrder);
-                    DisplayPlayersOnPitch(AwayTeamGrid, match.AwayTeamStatistics.StartingEleven, reverseOrder);
+                    DisplayPlayersOnPitch(HomeTeamGrid, match.HomeTeamStatistics.StartingEleven, normalOrder, match);
+                    DisplayPlayersOnPitch(AwayTeamGrid, match.AwayTeamStatistics.StartingEleven, reverseOrder, match);
                 }
                 else
                 {
                     tbMatchResult.Text = $"{awayGoals} : {homeGoals}";
-                    DisplayPlayersOnPitch(AwayTeamGrid, match.HomeTeamStatistics.StartingEleven, reverseOrder);
-                    DisplayPlayersOnPitch(HomeTeamGrid, match.AwayTeamStatistics.StartingEleven, normalOrder);
+                    DisplayPlayersOnPitch(AwayTeamGrid, match.HomeTeamStatistics.StartingEleven, reverseOrder, match);
+                    DisplayPlayersOnPitch(HomeTeamGrid, match.AwayTeamStatistics.StartingEleven, normalOrder, match);
                 }
             }
             else
@@ -250,7 +251,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void DisplayPlayersOnPitch(Grid grid, List<StartingEleven> players, Position[] positions)
+    private async void DisplayPlayersOnPitch(Grid grid, List<StartingEleven> players, Position[] positions, DAL.Models.Match match)
     {
         grid.Children.Clear();
         grid.RowDefinitions.Clear();
@@ -274,10 +275,19 @@ public partial class MainWindow : Window
 
             foreach (var player in group)
             {
-                var match = Regex.Match(player.Name, @"([A-Z][A-Z\- ]+)$");
-                string displayName = match.Success ? match.Groups[1].Value : player.Name;
+                var matchSurname = Regex.Match(player.Name, @"([A-Z][A-Z\- ]+)$");
+                string displayName = matchSurname.Success ? matchSurname.Groups[1].Value : player.Name;
                 var control = new PlayerUserControl(displayName, (int)player.ShirtNumber);
-                control.MouseDown += OpenPlayerInfo(player);
+
+                var (goals, yellowCards) = GetPlayerStatsForMatch(match, player.Name);
+
+                var playerStats = new PlayerStats
+                {
+                    Player = player,
+                    Goals = goals,
+                    YellowCards = yellowCards
+                };
+                control.MouseDown += OpenPlayerInfo(playerStats);
                 stack.Children.Add(control);
             }
 
@@ -285,6 +295,25 @@ public partial class MainWindow : Window
             Grid.SetRow(stack, 0);
             grid.Children.Add(stack);
         }
+    }
+
+    private (int Goals, int YellowCards) GetPlayerStatsForMatch(DAL.Models.Match match, string playerName)
+    {
+        int goals = 0;
+        int yellowCards = 0;
+
+        foreach (var ev in match.HomeTeamEvents.Concat(match.AwayTeamEvents))
+        {
+            if (ev.Player == playerName)
+            {
+                if (ev.TypeOfEvent == TypeOfEvent.Goal || ev.TypeOfEvent == TypeOfEvent.GoalPenalty)
+                    goals++;
+                if (ev.TypeOfEvent == TypeOfEvent.YellowCard)
+                    yellowCards++;
+            }
+        }
+
+        return (goals, yellowCards);
     }
 
     #endregion
