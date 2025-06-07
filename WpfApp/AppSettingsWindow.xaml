@@ -4,45 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
+        xmlns:p="clr-namespace:Localization;assembly=Localization"
         mc:Ignorable="d"
-        Title="App Settings" 
+        Title="{x:Static p:Resource.Settings}" 
         Height="500" Width="300"
         Loaded="AppSettingsWindow_Loaded">
     <StackPanel Margin="10" VerticalAlignment="Center">
-        <GroupBox Header="Language and Region" Margin="0,0,0,10">
+        <GroupBox Header="{x:Static p:Resource.LangAndReg}" Margin="0,0,0,10">
             <StackPanel>
-                <RadioButton x:Name="rbEn" Content="English" GroupName="LangAndReg" Margin="5"/>
-                <RadioButton x:Name="rbHr" Content="Croatian" GroupName="LangAndReg" Margin="5"/>
+                <RadioButton x:Name="rbEn" Content="{x:Static p:Resource.English}" GroupName="LangAndReg" Margin="5"/>
+                <RadioButton x:Name="rbHr" Content="{x:Static p:Resource.Croatian}" GroupName="LangAndReg" Margin="5"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="World Cup Gender" Margin="0,0,0,10">
+        <GroupBox Header="{x:Static p:Resource.WCGender}" Margin="0,0,0,10">
             <StackPanel>
-                <RadioButton x:Name="rbMen" Content="Men" GroupName="Gender" Margin="5"/>
-                <RadioButton x:Name="rbWomen" Content="Women" GroupName="Gender" Margin="5"/>
+                <RadioButton x:Name="rbMen" Content="{x:Static p:Resource.Men}" GroupName="Gender" Margin="5"/>
+                <RadioButton x:Name="rbWomen" Content="{x:Static p:Resource.Women}" GroupName="Gender" Margin="5"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Window Resolution" Margin="0,0,0,10">
+        <GroupBox Header="{x:Static p:Resource.WindowResolution}" Margin="0,0,0,10">
             <StackPanel>
-                <CheckBox x:Name="cbFullScreen" Content="Full Screen" Margin="5" Checked="cbFullScreen_Checked" Unchecked="cbFullScreen_Unchecked"/>
+                <CheckBox x:Name="cbFullScreen" Content="{x:Static p:Resource.FullScreen}" Margin="5" Checked="cbFullScreen_Checked" Unchecked="cbFullScreen_Unchecked"/>
                 <RadioButton x:Name="rbRes1" Content="800 x 600" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes2" Content="1000 x 800" GroupName="Resolution" Margin="5"/>
                 <RadioButton x:Name="rbRes3" Content="1200 x 900" GroupName="Resolution" Margin="5"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Repo Type" Margin="0,0,0,10">
+        <GroupBox Header="{x:Static p:Resource.RepoType}" Margin="0,0,0,10">
             <StackPanel>
-                <RadioButton x:Name="rbWebApi" Content="Web API" Margin="5"/>
-                <RadioButton x:Name="rbLocalFiles" Content="Local Files" Margin="5"/>
-                <RadioButton x:Name="rbAutodetect" Content="Autodetect" Margin="5"/>
+                <RadioButton x:Name="rbWebApi" Content="{x:Static p:Resource.WebAPI}" Margin="5"/>
+                <RadioButton x:Name="rbLocalFiles" Content="{x:Static p:Resource.LocalFiles}" Margin="5"/>
+                <RadioButton x:Name="rbAutodetect" Content="{x:Static p:Resource.Autodetect}" Margin="5"/>
             </StackPanel>
         </GroupBox>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Save" Width="80" Margin="5" IsDefault="True" Click="Save_Click"/>
-            <Button Content="Cancel" Width="80" Margin="5" IsCancel="True" Click="Cancel_Click"/>
+            <Button Content="{x:Static p:Resource.Save}" Width="80" Margin="5" IsDefault="True" Click="Save_Click"/>
+            <Button Content="{x:Static p:Resource.Cancel}" Width="80" Margin="5" IsCancel="True" Click="Cancel_Click"/>
         </StackPanel>
     </StackPanel>
 </Window>

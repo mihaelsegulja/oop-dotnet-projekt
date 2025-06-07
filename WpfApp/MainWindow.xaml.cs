@@ -287,7 +287,7 @@ public partial class MainWindow : Window
                     Goals = goals,
                     YellowCards = yellowCards
                 };
-                control.MouseDown += OpenPlayerInfo(playerStats);
+                control.MouseUp += OpenPlayerInfo(playerStats);
                 stack.Children.Add(control);
             }
 

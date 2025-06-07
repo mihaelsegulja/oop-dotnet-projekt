@@ -120,6 +120,9 @@
   <data name="Attendance" xml:space="preserve">
     <value>Attendance</value>
   </data>
+  <data name="Autodetect" xml:space="preserve">
+    <value>Autodetect</value>
+  </data>
   <data name="AwayTeam" xml:space="preserve">
     <value>Away Team</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Favs" xml:space="preserve">
     <value>Favorites</value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>Full screen</value>
   </data>
   <data name="Goals" xml:space="preserve">
     <value>Goals</value>
@@ -168,6 +174,9 @@
   <data name="LangAndReg" xml:space="preserve">
     <value>Language and region</value>
   </data>
+  <data name="LocalFiles" xml:space="preserve">
+    <value>Local Files</value>
+  </data>
   <data name="MatchStats" xml:space="preserve">
     <value>Match statistics</value>
   </data>
@@ -192,6 +201,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Quit</value>
   </data>
+  <data name="RepoType" xml:space="preserve">
+    <value>Repo Type</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -212,6 +224,12 @@
   </data>
   <data name="WCGender" xml:space="preserve">
     <value>World Cup gender</value>
+  </data>
+  <data name="WebAPI" xml:space="preserve">
+    <value>Web API</value>
+  </data>
+  <data name="WindowResolution" xml:space="preserve">
+    <value>Window resolution</value>
   </data>
   <data name="Women" xml:space="preserve">
     <value>Women</value>

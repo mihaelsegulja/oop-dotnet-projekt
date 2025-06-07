@@ -301,6 +301,7 @@ public partial class Form1 : Form
 
     private void HandleLocalization()
     {
+        this.Text = Resource.WorldCup;
         gbLangAndReg.Text = Resource.LangAndReg;
         rbEn.Text = Resource.English;
         rbHr.Text = Resource.Croatian;
@@ -317,6 +318,10 @@ public partial class Form1 : Form
         lbSelectFavTeam.Text = Resource.SelFavTeam;
         miControls.Text = Resource.Controls;
         miPrint.Text = Resource.Print;
+        gbRepoType.Text = Resource.RepoType;
+        rbAutodetect.Text = Resource.Autodetect;
+        rbLocalFiles.Text = Resource.LocalFiles;
+        rbWebApi.Text = Resource.WebAPI;
     }
 
     private string? GetFifaCode(string selected)

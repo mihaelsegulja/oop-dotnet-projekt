@@ -120,6 +120,9 @@
   <data name="Attendance" xml:space="preserve">
     <value>Posjećenost</value>
   </data>
+  <data name="Autodetect" xml:space="preserve">
+    <value>Autodetekcija</value>
+  </data>
   <data name="AwayTeam" xml:space="preserve">
     <value>Gostujući Tim</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Favs" xml:space="preserve">
     <value>Favoriti</value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>Puni prozor</value>
   </data>
   <data name="Goals" xml:space="preserve">
     <value>Golovi</value>
@@ -168,6 +174,9 @@
   <data name="LangAndReg" xml:space="preserve">
     <value>Jezik i regija</value>
   </data>
+  <data name="LocalFiles" xml:space="preserve">
+    <value>Lokalne datoteke</value>
+  </data>
   <data name="MatchStats" xml:space="preserve">
     <value>Statistika meča</value>
   </data>
@@ -192,6 +201,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Izađi</value>
   </data>
+  <data name="RepoType" xml:space="preserve">
+    <value>Tip repozitorija</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Spremi</value>
   </data>
@@ -212,6 +224,12 @@
   </data>
   <data name="WCGender" xml:space="preserve">
     <value>Svjetsko prvenstvo - spol</value>
+  </data>
+  <data name="WebAPI" xml:space="preserve">
+    <value>Web API</value>
+  </data>
+  <data name="WindowResolution" xml:space="preserve">
+    <value>Rezolucija prozora</value>
   </data>
   <data name="Women" xml:space="preserve">
     <value>Žensko</value>

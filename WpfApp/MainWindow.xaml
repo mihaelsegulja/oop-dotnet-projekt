@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp"
         xmlns:p="clr-namespace:Localization;assembly=Localization"
         mc:Ignorable="d"
-        Title="World Cup"
+        Title="{x:Static p:Resource.WorldCup}"
         Height="600" Width="800"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
