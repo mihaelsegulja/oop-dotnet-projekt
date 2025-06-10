@@ -27,7 +27,7 @@ public partial class TeamDetailWindow : Window
             _appSettings = _appSettingsRepo.LoadSettings();
             _repo = RepositoryFactory.GetRepository(_appSettings.RepositoryType);
 
-            var teams = await _repo.GetTeams();
+            var teams = await _repo.GetTeamResults();
             var team = teams.FirstOrDefault(t => t.FifaCode.Equals(fifaCode, StringComparison.OrdinalIgnoreCase));
             if (team == null)
             {
@@ -35,34 +35,15 @@ public partial class TeamDetailWindow : Window
                 Close();
             }
 
-            var matches = await _repo.GetMatchesByTeam(fifaCode);
-
-            int played = matches.Count;
-            int wins = 0, losses = 0, draws = 0, goalsFor = 0, goalsAgainst = 0;
-
-            foreach (var match in matches)
-            {
-                bool isHome = match.HomeTeam.Code == fifaCode;
-                int teamGoals = isHome ? (int)match.HomeTeam.Goals : (int)match.AwayTeam.Goals;
-                int oppGoals = isHome ? (int)match.AwayTeam.Goals : (int)match.HomeTeam.Goals;
-
-                goalsFor += teamGoals;
-                goalsAgainst += oppGoals;
-
-                if (teamGoals > oppGoals) wins++;
-                else if (teamGoals < oppGoals) losses++;
-                else draws++;
-            }
-
             tbTeamName.Text = $"Country: {team.Country}";
             tbFifaCode.Text = $"FIFA Code: {team.FifaCode}";
-            tbPlayed.Text = $"Played: {played}";
-            tbWins.Text = $"Wins: {wins}";
-            tbLosses.Text = $"Losses: {losses}";
-            tbDraws.Text = $"Draws: {draws}";
-            tbGoalsFor.Text = $"Goals For: {goalsFor}";
-            tbGoalsAgainst.Text = $"Goals Against: {goalsAgainst}";
-            tbGoalDiff.Text = $"Goal Difference: {goalsFor - goalsAgainst}";
+            tbPlayed.Text = $"Played: {team.GamesPlayed}";
+            tbWins.Text = $"Wins: {team.Wins}";
+            tbLosses.Text = $"Losses: {team.Losses}";
+            tbDraws.Text = $"Draws: {team.Draws}";
+            tbGoalsFor.Text = $"Goals For: {team.GoalsFor}";
+            tbGoalsAgainst.Text = $"Goals Against: {team.GoalsAgainst}";
+            tbGoalDiff.Text = $"Goal Difference: {team.GoalDifferential}";
         }
         catch (Exception ex)
         {

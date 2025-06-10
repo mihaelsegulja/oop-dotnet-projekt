@@ -2,8 +2,8 @@ using DAL.Config;
 using DAL.Enums;
 using DAL.Repositories;
 using Localization;
-using System.Drawing.Printing;
 using System.Globalization;
+using WinFormsApp.Managers;
 using WinFormsApp.Models;
 
 namespace WinFormsApp;
@@ -14,16 +14,10 @@ public partial class Form1 : Form
     private AppSettings _appSettings;
     private IRepository _repo;
 
-    private PrintDocument printDocument = new PrintDocument();
-    private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
-    private DataGridView? printSourceDgv = null;
-    private string printTitle = "";
-
     public Form1()
     {
         InitializeComponent();
         LoadAppSettings();
-        printDocument.PrintPage += PrintDocument_PrintPage;
     }
 
     #region EVENTS
@@ -127,9 +121,7 @@ public partial class Form1 : Form
             MessageBoxIcon.Question,
             MessageBoxDefaultButton.Button1);
 
-        if (result == DialogResult.Yes)
-            _appSettingsRepo.SaveSettings(_appSettings);
-        else
+        if (result == DialogResult.No)
             e.Cancel = true;
     }
 
@@ -214,75 +206,14 @@ public partial class Form1 : Form
 
     private void miPrint_Click(object sender, EventArgs e)
     {
+        PrintManager pm = new();
+
         if (tcMain.SelectedTab == tpPlayerStats)
-        {
-            printSourceDgv = dgvPlayerStats;
-            printTitle = Resource.PlayerStats;
-        }
+            pm.Print(dgvPlayerStats, Resource.PlayerStats);
         else if (tcMain.SelectedTab == tpMatchStats)
-        {
-            printSourceDgv = dgvMatchStats;
-            printTitle = Resource.MatchStats;
-        }
+            pm.Print(dgvMatchStats, Resource.MatchStats);
         else
-        {
-            printSourceDgv = null;
             return;
-        }
-
-        printPreviewDialog.Document = printDocument;
-        printPreviewDialog.ShowDialog();
-    }
-
-    private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-    {
-        if (printSourceDgv == null) return;
-
-        Font headerFont = new Font("Comic Sans MS", 12, FontStyle.Bold);
-        Font cellFont = new Font("Comic Sans MS", 10);
-        int x = e.MarginBounds.Left;
-        int y = e.MarginBounds.Top;
-        int rowHeight = cellFont.Height + 8;
-        int imageSize = 40;
-
-        e.Graphics.DrawString(printTitle, headerFont, Brushes.Black, x, y);
-        y += rowHeight + 10;
-
-        int colX = x;
-        foreach (DataGridViewColumn col in printSourceDgv.Columns)
-        {
-            if (!col.Visible) continue;
-            e.Graphics.DrawString(col.HeaderText, headerFont, Brushes.Black, colX, y);
-            colX += (col is DataGridViewImageColumn) ? imageSize + 10 : 125;
-        }
-        y += rowHeight;
-
-        foreach (DataGridViewRow row in printSourceDgv.Rows)
-        {
-            if (row.IsNewRow) continue;
-            colX = x;
-            foreach (DataGridViewColumn col in printSourceDgv.Columns)
-            {
-                if (!col.Visible) continue;
-
-                if (col is DataGridViewImageColumn)
-                {
-                    var cellValue = row.Cells[col.Index].Value;
-                    if (cellValue is Image img)
-                    {
-                        e.Graphics.DrawImage(img, colX, y, imageSize, imageSize);
-                    }
-                    colX += imageSize + 10;
-                }
-                else
-                {
-                    var value = row.Cells[col.Index].FormattedValue?.ToString() ?? "";
-                    e.Graphics.DrawString(value, cellFont, Brushes.Black, colX, y + (imageSize - rowHeight) / 2);
-                    colX += 125;
-                }
-            }
-            y += Math.Max(rowHeight, imageSize);
-        }
     }
 
     private void miControls_Click(object sender, EventArgs e)
@@ -448,13 +379,6 @@ public partial class Form1 : Form
             ctrl.SetSelected(false);
         foreach (var ctrl in flpFavPlayers.Controls.OfType<PlayerUserControl>())
             ctrl.SetSelected(false);
-    }
-
-    public List<PlayerUserControl> GetSelectedPlayerControls()
-    {
-        var selected = flpAllPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected).ToList();
-        selected.AddRange(flpFavPlayers.Controls.OfType<PlayerUserControl>().Where(c => c.IsSelected));
-        return selected;
     }
 
     private async Task<List<PlayerStats>> GetPlayerStatsAsync(string fifaCode)

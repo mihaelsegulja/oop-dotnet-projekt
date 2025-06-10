@@ -9,7 +9,6 @@ public partial class PlayerUserControl : UserControl
     public bool IsFavorite { get; set; }
     public bool IsSelected { get; private set; }
     public event EventHandler? SelectionChanged;
-    
     private Point _dragStartPoint;
     private bool _dragInitiated = false;
 

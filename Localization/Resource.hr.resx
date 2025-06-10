@@ -129,6 +129,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Odustani</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zatvori</value>
+  </data>
   <data name="ConfirmExit" xml:space="preserve">
     <value>Potvrdi izlaz</value>
   </data>

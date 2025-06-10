@@ -102,9 +102,7 @@ public partial class MainWindow : Window
             MessageBoxImage.Question
             );
 
-        if (result == MessageBoxResult.Yes)
-            _appSettingsRepo.SaveSettings(_appSettings);
-        else
+        if (result == MessageBoxResult.No)
             e.Cancel = true;
     }
 

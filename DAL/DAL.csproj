@@ -11,12 +11,6 @@
     <PackageReference Include="RestSharp" Version="112.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="wc_appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <Import Project="..\Resources\Resources.projitems" Label="Shared" />
 
 </Project>
