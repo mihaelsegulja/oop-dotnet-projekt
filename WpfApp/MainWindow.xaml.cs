@@ -2,6 +2,8 @@
 using DAL.Enums;
 using DAL.Models;
 using DAL.Repositories;
+using Localization;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -89,6 +91,21 @@ public partial class MainWindow : Window
         {
             new PlayerDetailWindow(playerStats).Show();
         };
+    }
+
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+        var result = MessageBox.Show(
+            Resource.PromptExit,
+            Resource.ConfirmExit,
+            MessageBoxButton.YesNo, 
+            MessageBoxImage.Question
+            );
+
+        if (result == MessageBoxResult.Yes)
+            _appSettingsRepo.SaveSettings(_appSettings);
+        else
+            e.Cancel = true;
     }
 
     #endregion

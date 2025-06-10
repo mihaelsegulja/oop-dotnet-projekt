@@ -123,12 +123,13 @@ public partial class Form1 : Form
         var result = MessageBox.Show(
             Resource.PromptExit,
             Resource.ConfirmExit,
-            MessageBoxButtons.OKCancel,
+            MessageBoxButtons.YesNo,
             MessageBoxIcon.Question,
-            MessageBoxDefaultButton.Button1
-        );
+            MessageBoxDefaultButton.Button1);
 
-        if (result != DialogResult.OK)
+        if (result == DialogResult.Yes)
+            _appSettingsRepo.SaveSettings(_appSettings);
+        else
             e.Cancel = true;
     }
 

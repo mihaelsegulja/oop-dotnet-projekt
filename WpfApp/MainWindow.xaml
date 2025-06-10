@@ -9,6 +9,7 @@
         Title="{x:Static p:Resource.WorldCup}"
         Height="600" Width="800"
         Loaded="Window_Loaded"
+        Closing="Window_Closing"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
